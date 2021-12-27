@@ -4,7 +4,7 @@ const StudentCourses = ({ navigation, route }) => {
     const [data, setData] = useState([]);
     const [name, setName] = useState('');
     useEffect(() => {
-        var InsertApiURL = `http://192.168.1.104/EmpPerformanceApi/api/Student/getCourseByStd?regno=${route.params.regno}`;
+        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Student/getCourseByStd?regno=${route.params.regno}`;
         fetch(InsertApiURL,
             {
                 method: 'GET',

@@ -1,11 +1,11 @@
 // Homescreen.js
 import React, { useState, useEffect } from 'react';
 import { Button, View, Text, TextInput, ScrollView, ImageBackground, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-const EvaluatedTeacher = ({ navigation }) => {
+const EvaluatedTeacher = ({ navigation,route }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     setData([]);
-    var InsertApiURL = `http://192.168.1.104/EmpPerformanceApi/api/Director/getEvaluatedTeachers`;
+    var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Director/getEvaluatedTeachers?id=${route.params.Id}`;
     fetch(InsertApiURL,
       {
         method: 'GET',
@@ -38,7 +38,7 @@ const EvaluatedTeacher = ({ navigation }) => {
           data={data}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
-            return <TouchableOpacity >
+            return <TouchableOpacity onPress={()=>navigation.navigate('TeacherCourses',{Emp_No:item.Emp_No})}>
               <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.tName}</Text>
             </TouchableOpacity>
           }

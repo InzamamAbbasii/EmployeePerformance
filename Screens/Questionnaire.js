@@ -43,10 +43,9 @@ const Questionnaire = ({ navigation }) => {
             Category: element.Category,
           }])
         });
-        console.log(data);
       })
       .catch((error) => {
-        console.log(error)
+        alert(error)
       })
   }, [])
   return (

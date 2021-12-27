@@ -21,8 +21,12 @@ import TeacherDetails from './Screens/TeacherDetails';
 import DirectorDashboard from './Screens/DirectorDashboard';
 import StudentCourses from './Screens/StudentCourses';
 import Evaluation from './Screens/Evaluation';
+import TeacherCourses from './Screens/TeacherCourses';
+import TeacherEvaluationResult from './Screens/TeacherEvaluationResult';
+import TeacherDashBoard from './Screens/TeacherDashBoard';
 const Stack = createNativeStackNavigator();
 function App() {  //navigation between screens
+  global.ip= '192.168.1.102';
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -201,9 +205,45 @@ function App() {  //navigation between screens
               fontWeight: 'bold',
             },
           }} />
+        <Stack.Screen name="TeacherCourses" component={TeacherCourses}
+          options={{
+            title: 'Teacher Courses',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="TeacherEvaluationResult" component={TeacherEvaluationResult}
+          options={{
+            title: 'TeacherEvaluationResult',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
         <Stack.Screen name="EvaluatedTeacher" component={EvaluatedTeacher}
           options={{
             title: 'EvaluatedTeacher',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="TeacherDashBoard" component={TeacherDashBoard}
+          options={{
+            title: 'TeacherDashBoard',
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#FFA07A',

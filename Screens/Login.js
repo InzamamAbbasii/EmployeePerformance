@@ -48,9 +48,9 @@ const Login = ({ navigation }) => {
     } else if (name.toLocaleLowerCase() == 'admin' && password == '123') {
       navigation.navigate('AdminDashboard');
     } else if (name.toLocaleLowerCase() == 'director' && password == '123') {
-      navigation.navigate('DirectorDashboard');
+      navigation.navigate('DirectorDashboard', { empNo: name });
     } else {
-      var InsertApiURL = `http://192.168.1.104/EmpPerformanceApi/api/User/Login?name=${name}&pass=${password}`;
+      var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/User/Login?name=${name}&pass=${password}`;
       fetch(InsertApiURL,
         {
           method: 'GET',
@@ -58,7 +58,10 @@ const Login = ({ navigation }) => {
       )
         .then((response) => response.json())
         .then((response) => {
-          if (response.includes('true')) {
+          console.log(response);
+          if (response.includes('teacher')) {
+            navigation.navigate('TeacherDashBoard', { empNo: name });
+          }else if (response.includes('student')) {
             navigation.navigate('StudentCourses', { regno: name });
           }
           else {
