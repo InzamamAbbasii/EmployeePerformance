@@ -11,7 +11,7 @@ const Kpi = ({ navigation }) => {
       alert('Please enter required values');
     }else{
       // console.log(academicWeight,administrationWeight,projectWeight);
-      var InsertApiURL = "http://192.168.1.104/EmpPerformanceApi/api/Admin/addkpiweight";
+      var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Admin/addkpiweight`;
       var headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

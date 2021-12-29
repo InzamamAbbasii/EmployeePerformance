@@ -9,7 +9,7 @@ const Category = ({ navigation }) => {
       alert('Please enter metric');
     } else {
       console.log(metric);
-      var InsertApiURL = "http://192.168.1.104/EmpPerformanceApi/api/Admin/addcat";
+      var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Admin/addcat`;
       var headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

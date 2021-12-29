@@ -12,7 +12,7 @@ const Mcqs = ({ navigation }) => {
       alert('Please enter required values');
     }else{
       console.log(excellentWeight,goodWeight,avgWeight,poorWeight);
-      var InsertApiURL = "http://192.168.1.104/EmpPerformanceApi/api/Admin/addmcqsweight";
+      var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Admin/addmcqsweight`;
       var headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

@@ -24,6 +24,7 @@ import Evaluation from './Screens/Evaluation';
 import TeacherCourses from './Screens/TeacherCourses';
 import TeacherEvaluationResult from './Screens/TeacherEvaluationResult';
 import TeacherDashBoard from './Screens/TeacherDashBoard';
+import TeacherPerformace_Director from './Screens/TeacherPerformace_Director';
 const Stack = createNativeStackNavigator();
 function App() {  //navigation between screens
   global.ip= '192.168.1.102';
@@ -244,6 +245,18 @@ function App() {  //navigation between screens
         <Stack.Screen name="TeacherDashBoard" component={TeacherDashBoard}
           options={{
             title: 'TeacherDashBoard',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="TeacherPerformace_Director" component={TeacherPerformace_Director}
+          options={{
+            title: 'Performance',
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#FFA07A',

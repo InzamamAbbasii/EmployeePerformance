@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, ToastAndroid } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, ToastAndroid, ActivityIndicator } from 'react-native';
 import RadioForm, {
     RadioButton,
     RadioButtonInput,
@@ -11,6 +11,7 @@ const Evaluation = ({ navigation, route }) => {
     const [teacherName, setTeacherName] = useState('');
     const [questionsData, setQuestionsData] = useState([]);
     const [copy, setCopy] = useState([]);
+    const [isFetched, setIsFetched] = useState(true);
     var radio_props = [
         //radio button
         { label: "Excellent ", value: "Excellent", },
@@ -20,7 +21,7 @@ const Evaluation = ({ navigation, route }) => {
 
     ];
     useEffect(() => {
-        var InsertApiURL = `http://192.168.1.104/EmpPerformanceApi/api/Student/getteacherbycourse?empno=${route.params.Emp_no}`;
+        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Student/getteacherbycourse?empno=${route.params.Emp_no}`;
         fetch(InsertApiURL,
             {
                 method: 'GET',
@@ -35,9 +36,8 @@ const Evaluation = ({ navigation, route }) => {
             .catch((error) => {
                 console.log(error)
             })
-
         //get all question from database
-        var InsertApiURL = `http://192.168.1.104/EmpPerformanceApi/api/Admin/getQuestions`;
+        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Admin/getQuestions`;
         fetch(InsertApiURL,
             {
                 method: 'GET',
@@ -54,6 +54,7 @@ const Evaluation = ({ navigation, route }) => {
                         Selected: '',
                     }])
                 });
+                setIsFetched(false);
             })
             .catch((error) => {
                 console.log(error)
@@ -80,41 +81,41 @@ const Evaluation = ({ navigation, route }) => {
     }
     const detail = () => {
         questionsData.forEach(element => {
-            if(element.Selected!==''){
+            if (element.Selected !== '') {
                 // console.log(route.params.Reg_no,element.Qid,route.params.Emp_no,route.params.Course ,element.Selected,teacherName);
-                var InsertApiURL = "http://192.168.1.104/EmpPerformanceApi/api/Student/addStdEvaluation";
+                var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Student/addStdEvaluation`;
                 var headers = {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 };
                 var Data = {
-                    Reg_No:route.params.Reg_no,
-                    QuestionId:element.Qid,
-                    Emp_No:route.params.Emp_no,
-                    Course:route.params.Course,
-                    Weight:element.Selected,
-                    tName:teacherName,
+                    Reg_No: route.params.Reg_no,
+                    QuestionId: element.Qid,
+                    Emp_No: route.params.Emp_no,
+                    Course: route.params.Course,
+                    Weight: element.Selected,
+                    tName: teacherName,
                 }
                 fetch(InsertApiURL,
-                  {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify(Data)
-                  }
-                )
-                  .then((response) => response.json())
-                  .then((response) => {
-                      console.log(response);
-                    if(response=="true"){
-                      alert("Data Saved Successfully!")
+                    {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(Data)
                     }
-                    // ToastAndroid.show(response, ToastAndroid.LONG);
-                  })
-                  .catch((error) => {
-                    let errorMsg = error;
-                    alert(error);
-                    // ToastAndroid.show(errorMsg, ToastAndroid.LONG);
-                  })
+                )
+                    .then((response) => response.json())
+                    .then((response) => {
+                        console.log(response);
+                        if (response == "true") {
+                            alert("Data Saved Successfully!")
+                        }
+                        // ToastAndroid.show(response, ToastAndroid.LONG);
+                    })
+                    .catch((error) => {
+                        let errorMsg = error;
+                        alert(error);
+                        // ToastAndroid.show(errorMsg, ToastAndroid.LONG);
+                    })
             }
         });
     }
@@ -123,36 +124,44 @@ const Evaluation = ({ navigation, route }) => {
         <View style={{ flex: 1, backgroundColor: '#fff', padding: 10 }}>
             <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}> {teacherName} </Text>
 
-            <FlatList style={{ padding: 7 }}
-                data={questionsData}
-                keyExtractor={(item, index) => index}
-                renderItem={({ item, index }) => {
-                    return <TouchableOpacity style={styles.card} >
-                        <Text style={{ fontSize: 20, color: '#eee' }}>Question# : {item.Qid}</Text>
-                        <Text style={{ fontSize: 20, color: '#eee' }}>{item.Question}</Text>
-                        <RadioForm
-                            style={styles.radiostyle} //radio button
-                            onChangeText={(text) => setgender(text)}
-                            radio_props={radio_props}
-                            initial={-1}
-                            formHorizontal={false}
-                            labelHorizontal={true}
-                            buttonColor={"#2196f3"}
-                            animation={true}
-                            onPress={(value) => {
-                                onChangeValue(item.Qid, value)
-                                // ToastAndroid.show(value.toString(), ToastAndroid.SHORT);
-                            }
-                            }
-                            buttonsize={5}
-                            buttonOuterSize={30}
-                            selectedButtonColor={"green"}
-                            selectedLabelColor={"#fff"}
-                            labelStyle={{ fontSize: 20 }} />
-                    </TouchableOpacity>
-                }
-                }
-            />
+            {
+                isFetched == true ? (
+                    <View style={[styles.container, styles.horizontal]}>
+                        <ActivityIndicator size="large" color="#000" />
+                    </View>
+                ) : (
+                    <FlatList style={{ padding: 7 }}
+                        data={questionsData}
+                        keyExtractor={(item, index) => index}
+                        renderItem={({ item, index }) => {
+                            return <TouchableOpacity style={styles.card} >
+                                <Text style={{ fontSize: 20, color: '#eee' }}>Question# : {item.Qid}</Text>
+                                <Text style={{ fontSize: 20, color: '#eee' }}>{item.Question}</Text>
+                                <RadioForm
+                                    style={styles.radiostyle} //radio button
+                                    onChangeText={(text) => setgender(text)}
+                                    radio_props={radio_props}
+                                    initial={-1}
+                                    formHorizontal={false}
+                                    labelHorizontal={true}
+                                    buttonColor={"#2196f3"}
+                                    animation={true}
+                                    onPress={(value) => {
+                                        onChangeValue(item.Qid, value)
+                                        // ToastAndroid.show(value.toString(), ToastAndroid.SHORT);
+                                    }
+                                    }
+                                    buttonsize={5}
+                                    buttonOuterSize={30}
+                                    selectedButtonColor={"green"}
+                                    selectedLabelColor={"#fff"}
+                                    labelStyle={{ fontSize: 20 }} />
+                            </TouchableOpacity>
+                        }
+                        }
+                    />
+                )
+            }
             <TouchableOpacity style={styles.btnTouchable}
                 onPress={() => detail()}>
                 <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
@@ -163,6 +172,15 @@ const Evaluation = ({ navigation, route }) => {
 
 export default Evaluation;
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center"
+    },
+    horizontal: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10
+    },
     card: {
         borderRadius: 20,
         padding: 20,

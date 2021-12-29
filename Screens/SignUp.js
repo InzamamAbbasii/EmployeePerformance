@@ -42,7 +42,7 @@ const SignUp = ({ navigation }) => {
       alert("Password and Confirm Password must same!");
     } else {
       var InsertApiURL =
-        "http://192.168.1.102/EmpPerformanceApi/api/User/SignUp";
+        `http://${ip}/EmpPerformanceApi/api/User/SignUp`;
       var headers = {
         //api connection
         Accept: "application/json",

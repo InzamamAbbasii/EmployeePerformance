@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   ImageBackground,
   FlatList,
+  ActivityIndicator
 } from "react-native";
 import RadioForm, {
   RadioButton,
@@ -21,13 +22,13 @@ var radio_props = [
   { label: "Good", value: "Good" },
   { label: "Average", value: "Average" },
   { label: "Poor", value: "Poor" }
-
 ];
 const Questionnaire = ({ navigation }) => {
   const [data, setData] = useState([]);
+  const [isFetched, setIsFetched] = useState(true);
   useEffect(() => {
     setData([]);
-    var InsertApiURL = `http://192.168.1.104/EmpPerformanceApi/api/Admin/getQuestions`;
+    var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Admin/getQuestions`;
     fetch(InsertApiURL,
       {
         method: 'GET',
@@ -35,7 +36,6 @@ const Questionnaire = ({ navigation }) => {
     )
       .then((response) => response.json())
       .then((response) => {
-
         response.forEach(element => {
           setData(data => [...data, {
             Qid: element.Qid,
@@ -43,6 +43,7 @@ const Questionnaire = ({ navigation }) => {
             Category: element.Category,
           }])
         });
+        setIsFetched(false);
       })
       .catch((error) => {
         alert(error)
@@ -50,7 +51,14 @@ const Questionnaire = ({ navigation }) => {
   }, [])
   return (
     <View style={styles.container}>
-      <FlatList
+      {
+        isFetched == true ? (
+          <View style={[styles.container, styles.horizontal]}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>
+        ) : (
+       <View>
+               <FlatList
         data={data}
         keyExtractor={(item, index) => index}
         renderItem={(item, index) =>
@@ -82,6 +90,9 @@ const Questionnaire = ({ navigation }) => {
         onPress={() => navigation.navigate('Question')}>
         <Text style={styles.btnText}>+</Text>
       </TouchableOpacity>
+       </View>
+        )
+      }
     </View>
   );
 }
@@ -90,6 +101,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#eee',
     padding: 15,
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
   },
   card: {
     marginBottom: 15,

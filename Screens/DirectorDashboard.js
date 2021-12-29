@@ -5,7 +5,7 @@ const DirectorDashboard = ({ navigation,route }) => {
     <ImageBackground source={require('../assets/Images/background.png')} resizeMode="cover" style={styles.container}>
       <View style={styles.innerView}>
         <View style={styles.texttop}>
-          <Text style={styles.btnText}>Director</Text>
+          <Text style={styles.btnText}>Director DashBoard</Text>
         </View>
         <TouchableOpacity style={styles.userbtn}
           onPress={() => navigation.navigate('EvaluatedTeacher',{Id:route.params.empNo})}>
@@ -14,6 +14,10 @@ const DirectorDashboard = ({ navigation,route }) => {
         <TouchableOpacity style={styles.userbtn}
           onPress={() => navigation.navigate('TeacherDetails')}>
           <Text style={styles.btnText}>Evaluation Permission</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.userbtn}
+          onPress={() => navigation.navigate('TeacherPerformace_Director',{Id:route.params.empNo})}>
+          <Text style={styles.btnText}> View Performace </Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -27,45 +31,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
   },
-  // container:
-  // {
-  //   flex:1,
-  //   justifyContent:'center',
-  //   backgroundColor:'#00FFFF',
-  //   marginTop:'20%',
-  //   marginBottom:'40%',
-  //   marginLeft:20,
-  //   marginRight:20,
-  //   borderRadius:10,
-  //   paddingBottom:100,
-  // },
   texttop: {
     backgroundColor: 'orange',
-    width: '50%',
     height: '10%',
     borderRadius: 10,
-    marginLeft: '25%',
+      alignSelf:'center'
     //marginTop:15,
-    marginBottom: 100,
   },
   userbtn: {
     backgroundColor: "#FFA07A",
-    padding: 10,
     marginLeft: 20,
-    marginBottom: 40,
     marginTop: 40,
     width: "90%",
+    height:90,
     fontFamily: "SemiBold",
-    borderRadius: 25,
+    borderRadius: 15,
+    justifyContent:'center'
   },
   btnText: {
-    //       flexDirection:'row',
-    fontSize: 25,
+    fontSize: 25,padding:10,
     textAlign: 'center',
     fontFamily: "fantasy",
     justifyContent: 'center',
-    padding: 10,
-
   },
   innerView: {
     // flex:1,

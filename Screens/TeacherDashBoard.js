@@ -4,8 +4,14 @@ import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 const TeacherDashBoard = ({ navigation,route }) => {
     const [data, setData] = useState([]);
     const [permission, setPermission] = useState('');
+    const [average, setAverage] = useState(0);
+    const [academic, setAcademic] = useState(0);
+    const [administrationRatio, setAdministrationRatio] = useState(0);
+    const [projectRatio, setProjectRatio] = useState(0);
+    const [empName, setEmpName] = useState('');
     useEffect(() => {
       setData([]);
+      //getting permession...
       var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Student/getteacherbycourse?empNo=${route.params.empNo}`;
       fetch(InsertApiURL,
         {
@@ -16,6 +22,7 @@ const TeacherDashBoard = ({ navigation,route }) => {
         .then((response) => {
             response.forEach(element => {
                 setPermission(element.Permission);
+                setEmpName(element.Emp_firstname+element.Emp_middle+" "+element.Emp_lastname)
                 setData(data => [...data,
                     {
                       Emp_no: element.Emp_no,
@@ -32,13 +39,38 @@ const TeacherDashBoard = ({ navigation,route }) => {
         .catch((error) => {
           console.log(error)
         })
+
+        //getting performace ratio...
+        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Director/getEmpPerformance?empNo=${route.params.empNo}`;
+        fetch(InsertApiURL,
+          {
+            method: 'GET',
+          }
+        )
+          .then((response) => response.json())
+          .then((response) => {
+              console.log(response.project);
+                  setAcademic(response.academic);
+                  setAdministrationRatio(response.administration);
+                  setProjectRatio(response.project);
+                  setAverage(response.average);
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+
     }, [])
     return (
-        <ImageBackground source={require('../assets/Images/background.png')} resizeMode="cover" style={styles.container}>
-            <View style={styles.innerView}>
+            <View style={{backgroundColor:'#fff',flex:1}}>
                 <View style={styles.texttop}>
-                    <Text style={styles.btnText}>Teacher</Text>
-                    <Text style={styles.btnText}>{permission}</Text>
+                    <Text style={styles.btnText}>{empName}</Text>
+                </View>
+                    <Text style={{fontSize:20,fontWeight:'bold',marginLeft:5}}>Performace Ratio : </Text>
+                <View>
+                    <Text style={{fontSize:20,fontWeight:'500',marginLeft:30}}>Academic : {academic}</Text>
+                    <Text style={{fontSize:20,fontWeight:'500',marginLeft:30}}>Administration : {administrationRatio}</Text>
+                    <Text style={{fontSize:20,fontWeight:'500',marginLeft:30}}>Project : {projectRatio}</Text>
+                    <Text style={{fontSize:20,fontWeight:'500',marginLeft:30}}>Average : {average}</Text>
                 </View>
                 <TouchableOpacity style={styles.userbtn}
                     onPress={() => navigation.navigate('EvaluatedTeacher')}>
@@ -49,7 +81,6 @@ const TeacherDashBoard = ({ navigation,route }) => {
                     <Text style={styles.btnText}>Evaluated Teacher</Text>
                 </TouchableOpacity>
             </View>
-        </ImageBackground>
     )
 }
 
@@ -60,26 +91,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
     },
-    // container:
-    // {
-    //   flex:1,
-    //   justifyContent:'center',
-    //   backgroundColor:'#00FFFF',
-    //   marginTop:'20%',
-    //   marginBottom:'40%',
-    //   marginLeft:20,
-    //   marginRight:20,
-    //   borderRadius:10,
-    //   paddingBottom:100,
-    // },
     texttop: {
         backgroundColor: 'orange',
-        width: '50%',
+        width: '90%',
         height: '10%',
         borderRadius: 10,
-        marginLeft: '25%',
-        //marginTop:15,
-        marginBottom: 100,
+        alignSelf:'center',
+        marginTop:15,
+        marginBottom: 10,
     },
     userbtn: {
         backgroundColor: "#FFA07A",
