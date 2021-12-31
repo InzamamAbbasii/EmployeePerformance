@@ -37,7 +37,7 @@ const Evaluation = ({ navigation, route }) => {
                 console.log(error)
             })
         //get all question from database
-        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Admin/getQuestions`;
+        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Teacher/getAcademicQuestions`;
         fetch(InsertApiURL,
             {
                 method: 'GET',
@@ -83,18 +83,21 @@ const Evaluation = ({ navigation, route }) => {
         questionsData.forEach(element => {
             if (element.Selected !== '') {
                 // console.log(route.params.Reg_no,element.Qid,route.params.Emp_no,route.params.Course ,element.Selected,teacherName);
-                var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Student/addStdEvaluation`;
+                var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/addAcademicEvaluation`;
                 var headers = {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 };
                 var Data = {
-                    Reg_No: route.params.Reg_no,
                     QuestionId: element.Qid,
-                    Emp_No: route.params.Emp_no,
+                    Question: element.Question,
+                    QCategory: element.Category,
                     Course: route.params.Course,
                     Weight: element.Selected,
-                    tName: teacherName,
+                    Emp_No: route.params.Emp_no,
+                    Evaluation_on: teacherName,
+                    Evaluated_By: route.params.Reg_no,
+                    Role:'Student'
                 }
                 fetch(InsertApiURL,
                     {

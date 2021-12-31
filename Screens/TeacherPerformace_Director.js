@@ -1,7 +1,15 @@
 // Homescreen.js
 import React, { useEffect, useState } from 'react';
-import { Button, View, Text, ToastAndroid, ScrollView, ImageBackground, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-
+import { Button, View, Text, ToastAndroid, ScrollView, Dimensions, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import Pie from 'react-native-pie';
+import {
+    LineChart,
+    BarChart,
+    PieChart,
+    ProgressChart,
+    ContributionGraph,
+    StackedBarChart
+} from "react-native-chart-kit";
 const TeacherPerformace_Director = ({ navigation, route }) => {
     const [data, setData] = useState([]);
     const [isFetched, setIsFetched] = useState(true);
@@ -12,7 +20,7 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
     const [empName, setEmpName] = useState('');
     useEffect(() => {
         setData([]);
-        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Director/getEvaluatedTeachers?id=${route.params.Id}`;
+        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluatedTeachers?id=${route.params.Id}`;
         fetch(InsertApiURL,
             {
                 method: 'GET',
@@ -22,7 +30,7 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
             .then((response) => {
                 response.forEach(element => {
                     //getting performace ratio...
-                    var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Director/getEmpPerformance?empNo=${element.Emp_No}`;
+                    var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult?empNo=${element.Emp_No}`;
                     fetch(InsertApiURL1,
                         {
                             method: 'GET',
@@ -34,12 +42,12 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
                             setData(data => [...data,
                             {
                                 Emp_No: element.Emp_No,
-                                tName: element.tName,
-                                Academic: response.academic,
-                                Administration: response.administration,
-                                Project: response.project,
-                                Average: response.average,
-                                KPI: (response.academic+response.administration+response.project)/3,
+                                Evaluation_on: element.Evaluation_on,
+                                Evaluation_By: element.Evaluation_By,
+                                Academic: response.Academic,
+                                Administration: response.Administration,
+                                Project: response.Project,
+                                Average: response.Average,
                             }
                             ])
                         })
@@ -47,6 +55,7 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
                             console.log(error)
                         })
                     //
+
                 });
                 setIsFetched(false);
             })
@@ -62,20 +71,70 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
                         <ActivityIndicator size="large" color="#000" />
                     </View>
                 ) : (
-                    <View style={{ width: '100%', padding: 20 }}>
+                    <View style={{ width: '100%', padding: 10, }}>
                         <FlatList style={{ padding: 7 }}
                             data={data}
                             keyExtractor={(item, index) => index}
                             renderItem={({ item, index }) => {
-                                return <TouchableOpacity style={{ backgroundColor: '#038f7e', borderRadius: 10,marginBottom:10,padding:10 }}>
-                                    <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.tName}</Text>
+                                return <TouchableOpacity style={{ backgroundColor: '#038f7e',width:'100%' ,borderRadius: 10, marginBottom: 10, padding: 10 }}>
+                                    <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.Evaluation_on}</Text>
                                     <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>Performace Ratio : </Text>
                                     <View>
                                         <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Academic : {item.Academic}</Text>
                                         <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Administration : {item.Administration}</Text>
                                         <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {item.Project}</Text>
                                         <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {item.Average}</Text>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>KPI Weight : {item.KPI}</Text>
+                                    </View>
+                                    <View>
+                                        <BarChart
+                                            data={{
+                                                labels:
+                                                    ['Academic', 'Adm', 'Project','Average'],
+                                                datasets: [
+                                                    {
+                                                        data: [item.Academic, item.Administration,item.Project,item.Average],
+                                                    },
+                                                ],
+                                            }}
+                                            width={Dimensions.get('window').width - 50}
+                                            // width={280}
+                                            height={220}
+                                            // yAxisLabel={'Rs'}
+                                            chartConfig={{
+                                                backgroundColor: '#1cc910',
+                                                backgroundGradientFrom: '#eff3ff',
+                                                backgroundGradientTo: '#efefef',
+                                                decimalPlaces: 2,
+                                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                                style: {
+                                                    borderRadius: 16,
+                                                },
+                                            }}
+                                            style={{
+                                                marginVertical: 8,
+                                                borderRadius: 16,
+                                            }}
+                                        />
+                                    </View>
+                                    <View style={{alignItems:'center'}}>
+                                        <Pie
+                                            radius={80}
+                                            sections={[
+                                                {
+                                                    percentage: (item.Academic/(item.Academic+item.Administration+item.Project))*100,
+                                                    color: '#C70039',
+                                                },
+                                                {
+                                                    percentage: (item.Administration/(item.Academic+item.Administration+item.Project))*100,
+                                                    color: '#44CD40',
+                                                },
+                                                {
+                                                    percentage: (item.Project/(item.Academic+item.Administration+item.Project))*100,
+                                                    color: '#404FCD',
+                                                },
+                                            ]}
+                                            strokeCap={'butt'}
+                                        />
                                     </View>
                                 </TouchableOpacity>
                             }
@@ -113,7 +172,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 2.32,
         shadowRadius: 20.46,
-
         elevation: 5,
     },
     txt: {
@@ -143,5 +201,4 @@ const styles = StyleSheet.create({
     },
 }
 )
-
 export default TeacherPerformace_Director;

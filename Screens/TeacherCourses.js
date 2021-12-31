@@ -29,23 +29,36 @@ const TeacherCourses = ({ navigation, route }) => {
     }, [])
     return (
         <ImageBackground source={require('../assets/Images/background.png')} resizeMode="cover" style={styles.container}>
-            <Text style={{fontSize:25,fontWeight:'bold'}}> Courses</Text>
+            <Text style={{ fontSize: 25, fontWeight: 'bold' }}> Courses</Text>
             <FlatList style={{ padding: 7 }}
                 data={data}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item, index }) => {
-                    return (
-                        // <View style={styles.innerView} >
+                    return (<View>
+                        {route.params.Type == "Academic" ? (
                             <TouchableOpacity style={{ borderWidth: 1, borderColor: '#fff', backgroundColor: '#000', margin: 5, padding: 10, borderRadius: 10 }}
-                            onPress={()=>navigation.navigate('TeacherEvaluationResult',{
-                                EmpNo:item.Emp_no,
-                                CourseName:item.Course_desc,
-                            })}
+                                onPress={() => navigation.navigate('AcademicQuestions', {
+                                    empName: route.params.empName,
+                                    CourseName: item.Course_desc,
+                                    EmpNo: item.Emp_no,
+                                    LoginId:route.params.LoginId,
+                                })}
                             >
-                                {/* <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.Emp_no}</Text> */}
                                 <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.Course_desc}</Text>
                             </TouchableOpacity>
-                        // </View>
+                        ) : (
+                            <TouchableOpacity style={{ borderWidth: 1, borderColor: '#fff', backgroundColor: '#000', margin: 5, padding: 10, borderRadius: 10 }}
+                                onPress={() => navigation.navigate('TeacherEvaluationResult', {
+                                    EmpNo: item.Emp_no,
+                                    CourseName: item.Course_desc,
+                                })}
+                            >
+                                <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.Course_desc}</Text>
+                            </TouchableOpacity>
+                        )
+
+                        }
+                    </View>
                     )
                 }
                 }

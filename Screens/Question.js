@@ -60,7 +60,7 @@ const Question = ({ navigation }) => {
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedQuestionType(itemValue)
               }>
-              <Picker.Item label="Acedamic" value="Acedamic" />
+              <Picker.Item label="Academic" value="Academic" />
               <Picker.Item label="Administration" value="Administration" />
               <Picker.Item label="Project" value="Project" />
             </Picker>

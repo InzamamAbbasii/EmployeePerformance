@@ -57,40 +57,40 @@ const Questionnaire = ({ navigation }) => {
             <ActivityIndicator size="large" color="#000" />
           </View>
         ) : (
-       <View>
-               <FlatList
-        data={data}
-        keyExtractor={(item, index) => index}
-        renderItem={(item, index) =>
-          <View style={styles.card}>
-            <Text style={styles.question}>Question# {item.item.Qid}</Text>
-            <Text style={styles.question}>{item.item.Question}</Text>
-            <RadioForm
-              style={styles.radiostyle} //radio button
-              onChangeText={(text) => setgender(text)}
-              radio_props={radio_props}
-              initial={-1}
-              formHorizontal={false}
-              labelHorizontal={true}
-              buttonColor={"#2196f3"}
-              animation={true}
-              onPress={(value) => {
-                ToastAndroid.show(value.toString(), ToastAndroid.SHORT);
+          <View>
+            <FlatList
+              data={data}
+              keyExtractor={(item, index) => index}
+              renderItem={(item, index) =>
+                <View style={styles.card}>
+                  <Text style={styles.question}>Question# {item.item.Qid}</Text>
+                  <Text style={styles.question}>{item.item.Question}</Text>
+                  <RadioForm
+                    style={styles.radiostyle} //radio button
+                    onChangeText={(text) => setgender(text)}
+                    radio_props={radio_props}
+                    initial={-1}
+                    formHorizontal={false}
+                    labelHorizontal={true}
+                    buttonColor={"#2196f3"}
+                    animation={true}
+                    onPress={(value) => {
+                      ToastAndroid.show(value.toString(), ToastAndroid.SHORT);
+                    }
+                    }
+                    buttonsize={20}
+                    buttonOuterSize={30}
+                    selectedButtonColor={"green"}
+                    selectedLabelColor={"red"}
+                    labelStyle={{ fontSize: 20 }} />
+                </View>
               }
-              }
-              buttonsize={20}
-              buttonOuterSize={30}
-              selectedButtonColor={"green"}
-              selectedLabelColor={"red"}
-              labelStyle={{ fontSize: 20 }} />
+            />
+            <TouchableOpacity style={styles.btn}
+              onPress={() => navigation.navigate('Question')}>
+              <Text style={styles.btnText}>+</Text>
+            </TouchableOpacity>
           </View>
-        }
-      />
-      <TouchableOpacity style={styles.btn}
-        onPress={() => navigation.navigate('Question')}>
-        <Text style={styles.btnText}>+</Text>
-      </TouchableOpacity>
-       </View>
         )
       }
     </View>

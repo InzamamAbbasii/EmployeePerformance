@@ -25,9 +25,17 @@ import TeacherCourses from './Screens/TeacherCourses';
 import TeacherEvaluationResult from './Screens/TeacherEvaluationResult';
 import TeacherDashBoard from './Screens/TeacherDashBoard';
 import TeacherPerformace_Director from './Screens/TeacherPerformace_Director';
+import ChooseEvaluationType from './Screens/ChooseEvaluationType';
+import TeachersList from './Screens/TeachersList';
+import AcademicQuestions from './Screens/AcademicQuestions';
+import AdministrativeQuestions from './Screens/AdministrativeQuestions';
+import ChooseEvaluationType_Director from './Screens/ChooseEvaluationType_Director';
+import TeachersList_Director from './Screens/TeacherList_Director';
+import AdministrationEvaluation_Director from './Screens/AdministrationEvaluation_Director';
+import ProjectEvaluation_Director from './Screens/ProjectEvaluation_Director';
 const Stack = createNativeStackNavigator();
 function App() {  //navigation between screens
-  global.ip= '192.168.1.102';
+  global.ip = '192.168.1.102';
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -257,6 +265,102 @@ function App() {  //navigation between screens
         <Stack.Screen name="TeacherPerformace_Director" component={TeacherPerformace_Director}
           options={{
             title: 'Performance',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="ChooseEvaluationType" component={ChooseEvaluationType}
+          options={{
+            title: 'ChooseEvaluationType',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="TeachersList" component={TeachersList}
+          options={{
+            title: 'TeachersList',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="AcademicQuestions" component={AcademicQuestions}
+          options={{
+            title: 'AcademicQuestions',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="AdministrativeQuestions" component={AdministrativeQuestions}
+          options={{
+            title: 'AdministrativeQuestions',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="ChooseEvaluationType_Director" component={ChooseEvaluationType_Director}
+          options={{
+            title: 'ChooseEvaluationType_Director',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="TeachersList_Director" component={TeachersList_Director}
+          options={{
+            title: 'TeachersList_Director',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="AdministrationEvaluation_Director" component={AdministrationEvaluation_Director}
+          options={{
+            title: 'AdministrationEvaluation_Director',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="ProjectEvaluation_Director" component={ProjectEvaluation_Director}
+          options={{
+            title: 'ProjectEvaluation_Director',
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#FFA07A',

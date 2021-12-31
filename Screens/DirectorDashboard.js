@@ -1,12 +1,17 @@
 import React from 'react'
 import { StyleSheet, Text, ImageBackground, TouchableOpacity, View } from 'react-native'
 const DirectorDashboard = ({ navigation,route }) => {
+  console.log(route.params);
   return (
     <ImageBackground source={require('../assets/Images/background.png')} resizeMode="cover" style={styles.container}>
       <View style={styles.innerView}>
         <View style={styles.texttop}>
           <Text style={styles.btnText}>Director DashBoard</Text>
         </View>
+        <TouchableOpacity style={styles.userbtn}
+          onPress={() => navigation.navigate('TeachersList_Director',{Id:route.params.empNo,Role:'Director'})}>
+          <Text style={styles.btnText}> Start Evaluation </Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.userbtn}
           onPress={() => navigation.navigate('EvaluatedTeacher',{Id:route.params.empNo})}>
           <Text style={styles.btnText}>Evaluated Teacher</Text>
@@ -29,11 +34,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   texttop: {
     backgroundColor: 'orange',
-    height: '10%',
+    // height: '10%',
+    minHeight:50,
+    padding:10,
     borderRadius: 10,
       alignSelf:'center'
     //marginTop:15,
@@ -58,11 +64,12 @@ const styles = StyleSheet.create({
     // flex:1,
     backgroundColor: '#00FFFF',
     borderRadius: 20,
-    //  padding:20,
+     paddingBottom:20,
     //margin:70,
     marginBottom: 40,
-    width: '80%',
-    height: '80%',
+    width: '90%',
+    marginTop:20,
+    minHeight:180,
   }
 })
 export default DirectorDashboard;

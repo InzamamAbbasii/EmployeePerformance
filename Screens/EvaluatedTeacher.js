@@ -4,8 +4,9 @@ import { Button, View, Text, TextInput, ScrollView, ImageBackground, StyleSheet,
 const EvaluatedTeacher = ({ navigation,route }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
+    console.log(route.params.Id);
     setData([]);
-    var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Director/getEvaluatedTeachers?id=${route.params.Id}`;
+    var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluatedTeachers?id=${route.params.Id}`;
     fetch(InsertApiURL,
       {
         method: 'GET',
@@ -14,21 +15,37 @@ const EvaluatedTeacher = ({ navigation,route }) => {
       .then((response) => response.json())
       .then((response) => {
         response.forEach(element => {
-          setData(data => [...data,
-          {
-            ID: element.Emp_no,
-            Reg_No: element.Emp_firstname,
-            QuestionId: element.QuestionId,
-            Emp_No: element.Emp_No,
-            Course: element.Course,
-            Weight: element.Weight,
-            tName: element.tName,
-          }
-          ])
-        });
+          //getting performace ratio...
+          var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult?empNo=${element.Emp_No}`;
+          fetch(InsertApiURL1,
+              {
+                  method: 'GET',
+              }
+          )
+              .then((response) => response.json())
+              .then((response) => {
+                  console.log(response);
+                  setData(data => [...data,
+                  {
+                      Emp_No: element.Emp_No,
+                      Evaluation_on: element.Evaluation_on,
+                      Evaluation_By: element.Evaluation_By,
+                      Academic: response.Academic,
+                      Administration: response.Administration,
+                      Project: response.Project,
+                      Average: response.Average,
+                  }
+                  ])
+              })
+              .catch((error) => {
+                  console.log(error)
+              })
+          //
+
+      });
       })
       .catch((error) => {
-        console.log(error)
+        alert(error)
       })
   }, [])
   return (
@@ -38,8 +55,11 @@ const EvaluatedTeacher = ({ navigation,route }) => {
           data={data}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
-            return <TouchableOpacity onPress={()=>navigation.navigate('TeacherCourses',{Emp_No:item.Emp_No})}>
-              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.tName}</Text>
+            return <TouchableOpacity style={{ backgroundColor: '#038f7e', borderRadius: 10, marginBottom: 10, padding: 10 }}
+            // onPress={()=>navigation.navigate('TeacherCourses',{Emp_No:item.Emp_No})}
+            >
+              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.Evaluation_on}</Text>
+              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Performace Ratio : {item.Average}</Text>
             </TouchableOpacity>
           }
           }
