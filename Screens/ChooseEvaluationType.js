@@ -8,13 +8,13 @@ const ChooseEvaluationType = ({ navigation,route }) => {
                 <View style={styles.texttop}>
                     <Text style={styles.btnText}>Choose Evaluation Type</Text>
                 </View>
-                <TouchableOpacity style={styles.userbtn}
-                    onPress={() => navigation.navigate('TeachersList',{Id:route.params.Id,Type:"Administrative"})}>
-                    <Text style={styles.btnText}> Administrative </Text>
-                </TouchableOpacity>
-               <TouchableOpacity style={styles.userbtn}
+               <TouchableOpacity style={route.params.AcademicPermission==true?([styles.userbtn,{backgroundColor:'#FFA07A'}]):([styles.userbtn,{backgroundColor:'#cccccc'}])} disabled={!route.params.AcademicPermission}
                     onPress={() => navigation.navigate('TeachersList',{Id:route.params.Id,Type:"Academic"})}>
                     <Text style={styles.btnText}> Acedamic </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={route.params.AdministrationPermission==true?([styles.userbtn,{backgroundColor:'#FFA07A'}]):([styles.userbtn,{backgroundColor:'#cccccc'}])} disabled={!route.params.AdministrationPermission}
+                    onPress={() => navigation.navigate('TeachersList',{Id:route.params.Id,Type:"Administrative"})}>
+                    <Text style={styles.btnText}> Administrative </Text>
                 </TouchableOpacity>
             </View>
     )

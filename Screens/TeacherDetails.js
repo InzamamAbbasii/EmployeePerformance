@@ -1,13 +1,9 @@
 // Homescreen.js
 import React, { useEffect, useState } from 'react';
 import { Button, View, Text, ToastAndroid, ScrollView, ImageBackground, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from "react-native-simple-radio-button";
+import RadioForm from "react-native-simple-radio-button";
+import CheckBox from '@react-native-community/checkbox';
 var radio_props = [
-  //radio button
   { label: "Allow", value: "Allow", },
   { label: "Not Allow", value: "Not Allow" },
 ];
@@ -17,15 +13,13 @@ const TeacherDetails = ({ navigation }) => {
   useEffect(() => {
     setData([]);
     var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Director/allTeachersList`;
-    fetch(InsertApiURL,
-      {
+    fetch(InsertApiURL,{
         method: 'GET',
-      }
-    )
-      .then((response) => response.json())
+      }).then((response) => response.json())
       .then((response) => {
         for (let index = 0; index < 10; index++) {
           const element = response[index];
+          console.log(element);
           setData(data => [...data,
           {
             Emp_no: element.Emp_no,
@@ -33,6 +27,10 @@ const TeacherDetails = ({ navigation }) => {
             Emp_lastname: element.Emp_lastname,
             Emp_middle: element.Emp_middle,
             Permission: element.Permission == "Allow" ? 0 : 1,
+            AcademicPermission: element.AcademicPermission=="true"?true:false,
+            AdministrationPermission:element.AdministrationPermission=="true"?true:false,
+            ProjectPermission:element.ProjectPermission=="true"?true:false,
+            ShowCheckBoxes:element.Permission == "Allow" ? true : false,
             // Status: element.Status,
             Selected: '',
           }
@@ -57,13 +55,17 @@ const TeacherDetails = ({ navigation }) => {
         console.log(error)
       })
   }, [])
-  const onChangeValue = (qid, itemSelected) => {
-    // console.log(qid, itemSelected);
+  const onChangeValue = (qid, item,callerValue) => {
     const newData = data.map(item => {
       if (item.Emp_no == qid) {
         return {
           ...item,
-          Selected: itemSelected,
+          Selected: callerValue,
+          Permission:callerValue=='Not Allow'?'Not Allow':'Allow',
+          ShowCheckBoxes:callerValue=='Not Allow'?false:true,//true when allow button press else false
+          AcademicPermission:callerValue==0?!item.AcademicPermission:item.AcademicPermission,//0 when click on checkbox of Academic
+          AdministrationPermission:callerValue==1?!item.AdministrationPermission:item.AdministrationPermission,//1 when click on checkbox of administration
+          ProjectPermission:callerValue==2?!item.ProjectPermission:item.ProjectPermission//2 whens click on checkbox of project
         }
       } else {
         return {
@@ -76,7 +78,8 @@ const TeacherDetails = ({ navigation }) => {
   const detail = () => {
     data.forEach(element => {
       if (element.Selected !== '') {
-        console.log(element.Emp_no, element.Selected);
+        console.log('..........................');
+        console.log(element,element.AcademicPermission);
         // console.log(route.params.Reg_no,element.Qid,route.params.Emp_no,route.params.Course ,element.Selected,teacherName);
         var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Director/teacherPermission`;
         var headers = {
@@ -85,7 +88,10 @@ const TeacherDetails = ({ navigation }) => {
         };
         var Data = {
           Emp_no: element.Emp_no,
-          Permission: element.Selected
+          Permission:element.Permission,
+          AcademicPermission:element.AcademicPermission,
+          AdministrationPermission:element.AdministrationPermission,
+          ProjectPermission:element.ProjectPermission
         }
         fetch(InsertApiURL,
           {
@@ -127,31 +133,55 @@ const TeacherDetails = ({ navigation }) => {
               keyExtractor={(item, index) => index}
               renderItem={({ item, index }) => {
                 return (<View style={styles.card}>
-                  {/* <TouchableOpacity style={{margin:20,backgroundColor:'#eee'}}> */}
-                    <Text style={{ fontSize: 20, color: '#000',}}>{item.Emp_firstname} {item.Emp_middle} {item.Emp_lastname}  </Text>
-                    {/* <Text style={{ fontSize: 20, color: '#eee' }}> NAme {item.Emp_firstname} </Text> */}
-                    <RadioForm
-                      style={styles.radiostyle} //radio button
-                      onChangeText={(text) => setgender(text)}
-
-                      radio_props={radio_props}
-                      initial={item.Permission}
-                      formHorizontal={false}
-                      labelHorizontal={true}
-                      buttonColor={"#2196f3"}
-                      // animation={true}
-                      onPress={(value) => {
-                        onChangeValue(item.Emp_no, value)
-                        // ToastAndroid.show(value.toString(), ToastAndroid.SHORT);
-                      }}
-                      buttonsize={20}
-                      buttonOuterSize={30}
-                      selectedButtonColor={"green"}
-                      selectedLabelColor={"green"}
-                      labelStyle={{ fontSize: 20, marginRight: 10 }}
-                    />
-                  {/* </TouchableOpacity> */}
-                  </View>
+                  <Text style={{ fontSize: 20, color: '#000', }}>{item.Emp_firstname} {item.Emp_middle} {item.Emp_lastname}  </Text>
+                  {/* <Text style={{ fontSize: 20, color: '#eee' }}> NAme {item.Emp_firstname} </Text> */}
+                  <RadioForm
+                    style={styles.radiostyle} //radio button
+                    onChangeText={(text) => setgender(text)}
+                    radio_props={radio_props}
+                    initial={item.Permission}
+                    formHorizontal={false}
+                    labelHorizontal={true}
+                    buttonColor={"#2196f3"}
+                    // animation={true}
+                    onPress={(value) => {onChangeValue(item.Emp_no,item,value)}}
+                    buttonsize={20}
+                    buttonOuterSize={30}
+                    selectedButtonColor={"green"}
+                    selectedLabelColor={"green"}
+                    labelStyle={{ fontSize: 20, marginRight: 10 }}
+                  />
+                  {
+                    item.ShowCheckBoxes == true? (
+                      <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <CheckBox
+                            disabled={false}
+                            value={item.AcademicPermission}
+                            onValueChange={(value) => onChangeValue(item.Emp_no, item,0)}
+                          />
+                          <Text style={{ fontSize: 18, color: '#222' }}>Academic</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <CheckBox
+                            disabled={false}
+                            value={item.AdministrationPermission}
+                            onValueChange={(value) => onChangeValue(item.Emp_no, item,1)}
+                          />
+                          <Text style={{ fontSize: 18, color: '#222' }}>Administration</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <CheckBox
+                            disabled={false}
+                            value={item.ProjectPermission}
+                            onValueChange={(value) => onChangeValue(item.Emp_no, item,2)}
+                          />
+                          <Text style={{ fontSize: 18, color: '#222' }}>Project</Text>
+                        </View>
+                      </View>
+                    ):(<View></View>)
+                  }
+                </View>
                 )
               }
               }
@@ -181,7 +211,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: '100%',
     // marginHorizontal: 8,
-    padding:15,
+    padding: 15,
     marginBottom: 15,
     backgroundColor: '#eee',
     shadowColor: "#000",

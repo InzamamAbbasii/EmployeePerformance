@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 // @react-native-community/art
 import com.reactnativecommunity.art.ARTPackage;
+// @react-native-community/checkbox
+import com.reactnativecommunity.checkbox.ReactCheckBoxPackage;
 // @react-native-community/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 // @react-native-picker/picker
@@ -77,6 +79,7 @@ public class PackageList {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
       new ARTPackage(),
+      new ReactCheckBoxPackage(),
       new RNCMaskedViewPackage(),
       new RNCPickerPackage(),
       new RNGestureHandlerPackage(),

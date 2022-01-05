@@ -80,10 +80,10 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
                                     <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.Evaluation_on}</Text>
                                     <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>Performace Ratio : </Text>
                                     <View>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Academic : {item.Academic}</Text>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Administration : {item.Administration}</Text>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {item.Project}</Text>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {item.Average}</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Academic : {((item.Academic/(item.Academic+item.Administration+item.Project))*100).toFixed(2)}%</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Administration : {((item.Administration/(item.Academic+item.Administration+item.Project))*100).toFixed(2)}%</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {((item.Project/(item.Academic+item.Administration+item.Project))*100).toFixed(2)}%</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {((((item.Academic/(item.Academic+item.Administration+item.Project))*100)+((item.Administration/(item.Academic+item.Administration+item.Project))*100)+((item.Project/(item.Academic+item.Administration+item.Project))*100))/3).toFixed(2)}%</Text>
                                     </View>
                                     <View>
                                         <BarChart

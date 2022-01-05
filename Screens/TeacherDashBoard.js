@@ -4,6 +4,9 @@ import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 const TeacherDashBoard = ({ navigation, route }) => {
   const [data, setData] = useState([]);
   const [permission, setPermission] = useState('');
+  const [academicPermission, setAcademicPermission] = useState(false);
+  const [administrationPermission, setAdministrationPermission] = useState(false);
+  const [projectPermission, setProjectPermission] = useState(false);
   const [average, setAverage] = useState(0);
   const [academic, setAcademic] = useState(0);
   const [administrationRatio, setAdministrationRatio] = useState(0);
@@ -21,8 +24,11 @@ const TeacherDashBoard = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((response) => {
         response.forEach(element => {
-          setPermission(element.Permission);
+          setPermission(element.Permission=="Allow"?true:false);
           setEmpName(element.Emp_firstname + element.Emp_middle + " " + element.Emp_lastname)
+          setAcademicPermission(element.AcademicPermission=="true"?true:false);
+          setAdministrationPermission(element.AdministrationPermission=="true"?true:false)
+          setProjectPermission(element.ProjectPermission=="true"?true:false)
           setData(data => [...data,
           {
             Emp_no: element.Emp_no,
@@ -71,19 +77,11 @@ const TeacherDashBoard = ({ navigation, route }) => {
         <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {projectRatio}</Text>
         <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {average}</Text>
       </View>
-      {
-        permission == "Allow" ? (
-          <TouchableOpacity style={styles.userbtn}
-            onPress={() => navigation.navigate('ChooseEvaluationType', { Id: route.params.empNo })}>
+
+          <TouchableOpacity  style={[styles.userbtn,permission==true?{backgroundColor:'#FFA07A'}:{backgroundColor:'#cccccc'}]} disabled={!permission}
+            onPress={() => navigation.navigate('ChooseEvaluationType', { Id: route.params.empNo,AcademicPermission:academicPermission,AdministrationPermission:administrationPermission })}>
             <Text style={styles.btnText}> Start Evaluation </Text>
           </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={[styles.userbtn,{backgroundColor:'#cccccc'}]} disabled={true}
-            onPress={() => navigation.navigate('ChooseEvaluationType', { Id: route.params.empNo })}>
-            <Text style={styles.btnText}> Start Evaluation </Text>
-          </TouchableOpacity>
-        )
-      }
       <TouchableOpacity style={styles.userbtn}
         onPress={() => navigation.navigate('EvaluatedTeacher', { Id: route.params.empNo })}>
         <Text style={styles.btnText}>Evaluated Teacher</Text>
