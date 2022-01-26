@@ -33,7 +33,8 @@
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-svg": "^12.1.1",
     "react-native-vector-icons": "^9.0.0",
-    "react-navigation-drawer": "^2.7.1"
+    "react-navigation-drawer": "^2.7.1",
+    "toggle-switch-react-native": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

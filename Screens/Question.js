@@ -17,7 +17,7 @@ const Question = ({ navigation }) => {
         'Content-Type': 'application/json'
       };
       var Data = {
-        Question:question,
+        Question1:question,
         Category:selectedQuestionType,
       }
       fetch(InsertApiURL,

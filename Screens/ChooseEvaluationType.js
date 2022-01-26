@@ -4,19 +4,28 @@ import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 const ChooseEvaluationType = ({ navigation,route }) => {
     console.log(route.params);
     return (
-            <View style={{backgroundColor:'#fff',flex:1}}>
+        <ImageBackground source={require('../assets/Images/123.jpg')} resizeMode="cover" style={styles.container}>
+            <View style={styles.container}>
                 <View style={styles.texttop}>
                     <Text style={styles.btnText}>Choose Evaluation Type</Text>
                 </View>
-               <TouchableOpacity style={route.params.AcademicPermission==true?([styles.userbtn,{backgroundColor:'#FFA07A'}]):([styles.userbtn,{backgroundColor:'#cccccc'}])} disabled={!route.params.AcademicPermission}
+                {route.params.AcademicPermission==true?(  //if permission is allow then button display else null
+                    <TouchableOpacity style={route.params.AcademicPermission==true?([styles.userbtn,{backgroundColor:'#FFA07A'}]):([styles.userbtn,{backgroundColor:'#cccccc'}])} 
                     onPress={() => navigation.navigate('TeachersList',{Id:route.params.Id,Type:"Academic"})}>
-                    <Text style={styles.btnText}> Acedamic </Text>
+                    <Text style={styles.btnText}> Academic </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={route.params.AdministrationPermission==true?([styles.userbtn,{backgroundColor:'#FFA07A'}]):([styles.userbtn,{backgroundColor:'#cccccc'}])} disabled={!route.params.AdministrationPermission}
-                    onPress={() => navigation.navigate('TeachersList',{Id:route.params.Id,Type:"Administrative"})}>
-                    <Text style={styles.btnText}> Administrative </Text>
-                </TouchableOpacity>
+                ):(null)
+            }   
+               {route.params.AdministrationPermission==true?(
+                   <TouchableOpacity style={route.params.AdministrationPermission==true?([styles.userbtn,{backgroundColor:'#FFA07A'}]):([styles.userbtn,{backgroundColor:'#cccccc'}])} 
+                   onPress={() => navigation.navigate('TeachersList',{Id:route.params.Id,Type:"Administrative"})}>
+                   <Text style={styles.btnText}> Administrative </Text>
+               </TouchableOpacity>
+               ):(null)
+               }
             </View>
+            {/* disabled={!route.params.AdministrationPermission} FOR DISABLE BUTTON IF PERMISSION IS ! ALLOW*/} 
+        </ImageBackground>
     )
 }
 

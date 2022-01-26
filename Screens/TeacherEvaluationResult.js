@@ -13,12 +13,13 @@ const TeacherEvaluationResult = ({ navigation, route }) => {
         )
             .then((response) => response.json())
             .then((response) => {
+                let count = 1;
                 response.forEach(element => {
                     setData(data => [...data,
                     {
                         Id: element.Id,
                         Reg_No: element.RegNo,
-                        QuestionId: element.Question,
+                        QuestionId: count++,
                         Emp_No: element.EmpNo,
                         Course: element.Course,
                         Weight: element.Weight,
@@ -39,7 +40,7 @@ const TeacherEvaluationResult = ({ navigation, route }) => {
                     keyExtractor={(item, index) => index}
                     renderItem={({ item, index }) => {
                         return <TouchableOpacity style={{ borderBottomWidth: 1, borderBottomColor: '#000', padding: 10, }}>
-                            <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}>Question : {item.QuestionId}</Text>
+                            <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}>Question # {item.QuestionId}</Text>
                             <View style={{ flexDirection: 'row'}}>
                                 <Text style={{flex:1.5,textAlign:'center',fontSize:20,fontWeight:'bold'}}>Reg No</Text>
                                 <Text style={{flex:0.5,textAlign:'center',fontSize:20,fontWeight:'bold'}}> Weight </Text>
@@ -53,7 +54,6 @@ const TeacherEvaluationResult = ({ navigation, route }) => {
                     }
                 />
             </View>
-
         </ImageBackground>
     );
 }
@@ -99,5 +99,4 @@ const styles = StyleSheet.create({
     },
 }
 )
-
 export default TeacherEvaluationResult;

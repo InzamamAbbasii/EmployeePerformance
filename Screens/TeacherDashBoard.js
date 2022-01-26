@@ -46,7 +46,7 @@ const TeacherDashBoard = ({ navigation, route }) => {
         console.log(error)
       })
 
-    //getting performace ratio...
+    //getting performace ratio... from api
     var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult?empNo=${route.params.empNo}`;
     fetch(InsertApiURL,
       {
@@ -63,10 +63,10 @@ const TeacherDashBoard = ({ navigation, route }) => {
       .catch((error) => {
         alert(error)
       })
-
   }, [])
   return (
-    <View style={{ backgroundColor: '#fff', flex: 1 }}>
+    <ImageBackground source={require('../assets/Images/back.png')} resizeMode="cover" style={styles.container}>
+    <View style={{flex:1}}>
       <View style={styles.texttop}>
         <Text style={styles.btnText}>{empName}</Text>
       </View>
@@ -77,7 +77,6 @@ const TeacherDashBoard = ({ navigation, route }) => {
         <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {projectRatio}</Text>
         <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {average}</Text>
       </View>
-
           <TouchableOpacity  style={[styles.userbtn,permission==true?{backgroundColor:'#FFA07A'}:{backgroundColor:'#cccccc'}]} disabled={!permission}
             onPress={() => navigation.navigate('ChooseEvaluationType', { Id: route.params.empNo,AcademicPermission:academicPermission,AdministrationPermission:administrationPermission })}>
             <Text style={styles.btnText}> Start Evaluation </Text>
@@ -87,9 +86,9 @@ const TeacherDashBoard = ({ navigation, route }) => {
         <Text style={styles.btnText}>Evaluated Teacher</Text>
       </TouchableOpacity>
     </View>
+  </ImageBackground>
   )
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

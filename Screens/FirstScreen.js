@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { 
     View, 
     Text, 
@@ -6,13 +6,38 @@ import {
     Dimensions,
     StyleSheet,
     StatusBar,
+    Animated,
     Image
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '@react-navigation/native';
-
+const FadeInView = (props) => {
+    const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
+  
+    React.useEffect(() => {
+      Animated.timing(
+        fadeAnim,
+        {
+          toValue: 1,
+          duration: 10000,
+          useNativeDriver: true
+        }
+      ).start();
+    }, [fadeAnim])
+  
+    return (
+      <Animated.View                 // Special animatable View
+        style={{
+          ...props.style,
+          opacity: fadeAnim,         // Bind opacity to animated value
+        }}
+      >
+        {props.children}
+      </Animated.View>
+    );
+  }
 const FirstScreen = ({navigation}) => {
     const { colors } = useTheme();
 
@@ -20,13 +45,17 @@ const FirstScreen = ({navigation}) => {
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
         <View style={styles.header}>
+        <FadeInView>
+       
             <Animatable.Image 
                 animation="bounceIn"
-                duraton="1500"
-         //   source={require('../assets/logo.png')}
+                duraton="1000"
+            source={require('../assets/Images/splash.png')}
             style={styles.logo}
             resizeMode="stretch"
             />
+             
+      </FadeInView>
         </View>
         <Animatable.View 
             style={[styles.footer, {
@@ -61,7 +90,7 @@ const FirstScreen = ({navigation}) => {
 export default FirstScreen;
 
 const {height} = Dimensions.get("screen");
-const height_logo = height * 0.28;
+const height_logo = height * 0.35;
 
 const styles = StyleSheet.create({
   container: {
@@ -91,7 +120,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold'
   },
   text: {
-      color: 'grey',
+      color: 'green',
       marginTop:5
   },
   button: {
@@ -108,6 +137,7 @@ const styles = StyleSheet.create({
   },
   textSign: {
       color: 'white',
+      fontSize:17,
       fontWeight: 'bold'
   }
 });

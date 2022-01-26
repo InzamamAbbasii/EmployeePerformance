@@ -1,12 +1,13 @@
 import React from "react";
-import { View, SafeAreaView, Button, StyleSheet ,TouchableOpacity,Text,Searchbar} from "react-native";
+import { View, SafeAreaView, Button, ImageBackground, StyleSheet ,TouchableOpacity,Text,Searchbar} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { TouchableHighlight } from "react-native-gesture-handler";
 
 const Settings=({ navigation }) =>{
 return(
-<View style={styles.container}>
+  <ImageBackground source={require('../assets/Images/image.jpg')} resizeMode="cover" style={styles.container}>
+<View style={{flex:1}}>
   <TouchableOpacity
    onPress={()=>navigation.navigate('Kpi')} 
    style={styles.button}>
@@ -45,12 +46,9 @@ return(
     </TouchableOpacity>
   <Text style={styles.icontxt}>Settings</Text>
   </View>
-  
-  
-  
-  
   </View> */}
   </View>
+  </ImageBackground>
   );
 };
 const styles = StyleSheet.create({

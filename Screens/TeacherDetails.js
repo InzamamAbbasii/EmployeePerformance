@@ -17,7 +17,7 @@ const TeacherDetails = ({ navigation }) => {
         method: 'GET',
       }).then((response) => response.json())
       .then((response) => {
-        for (let index = 0; index < 10; index++) {
+        for (let index = 0; index < 10; index++) {  // replace index<10 with response.length: to get all teacher list
           const element = response[index];
           console.log(element);
           setData(data => [...data,
@@ -29,7 +29,7 @@ const TeacherDetails = ({ navigation }) => {
             Permission: element.Permission == "Allow" ? 0 : 1,
             AcademicPermission: element.AcademicPermission=="true"?true:false,
             AdministrationPermission:element.AdministrationPermission=="true"?true:false,
-            ProjectPermission:element.ProjectPermission=="true"?true:false,
+            ProjectPermission:element.ProjectPermission=="true"?true : false,
             ShowCheckBoxes:element.Permission == "Allow" ? true : false,
             // Status: element.Status,
             Selected: '',
@@ -89,9 +89,9 @@ const TeacherDetails = ({ navigation }) => {
         var Data = {
           Emp_no: element.Emp_no,
           Permission:element.Permission,
-          AcademicPermission:element.AcademicPermission,
-          AdministrationPermission:element.AdministrationPermission,
-          ProjectPermission:element.ProjectPermission
+          AcademicPermission:element.AcademicPermission.toString(),
+          AdministrationPermission:element.AdministrationPermission.toString(),
+          ProjectPermission:element.ProjectPermission.toString()
         }
         fetch(InsertApiURL,
           {

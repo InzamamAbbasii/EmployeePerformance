@@ -47,9 +47,13 @@ const Login = ({ navigation }) => {
       alert("Please Enter Your Credentials!");
     } else if (name.toLocaleLowerCase() == 'admin' && password == '123') {
       navigation.navigate('AdminDashboard');
+      setName('');
+      setPassword('');
     } else if (name.toLocaleLowerCase() == 'director' && password == '123') {
       navigation.navigate('DirectorDashboard', { empNo: name });
-    } else {
+      setName('');
+      setPassword('');
+    } else {              //use ${ip} to get global ip address in every url.
       var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/User/Login?name=${name}&pass=${password}`;
       fetch(InsertApiURL,
         {
@@ -61,10 +65,16 @@ const Login = ({ navigation }) => {
           console.log(response);
           if (response.includes('teacher')) {
             navigation.navigate('TeacherDashBoard', { empNo: name });
+            setName('');
+            setPassword('');
           }else if (response.includes('student')) {
             navigation.navigate('StudentCourses', { regno: name });
+          setName('');
+          setPassword('');
           }
           else {
+            setName('');
+            setPassword('');
             alert(response);
           }
         })
@@ -168,7 +178,6 @@ const styles = StyleSheet.create({
     margin: 20,
     color: "#954535",
     fontFamily: "IndieFlower-Regular"
-
   },
   input: {
     width: "75%",
@@ -202,10 +211,10 @@ const styles = StyleSheet.create({
   },
   belowtxtView: {
     flexDirection: 'row',
-    marginTop: 30,
+    //marginTop: 30,
   },
   bottomText: {
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: '20%',
   },
 

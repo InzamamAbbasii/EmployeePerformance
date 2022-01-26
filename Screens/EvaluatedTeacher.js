@@ -1,10 +1,23 @@
 // Homescreen.js
 import React, { useState, useEffect } from 'react';
 import { Button, View, Text, TextInput, ScrollView, ImageBackground, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-const EvaluatedTeacher = ({ navigation,route }) => {
+import RadioForm from "react-native-simple-radio-button";
+
+const EvaluatedTeacher = ({ navigation, route }) => {
   const [data, setData] = useState([]);
+  const [academic, setAcademic] = useState(0);
+  const [administrationRatio, setAdministrationRatio] = useState(0);
+  const [projectRatio, setProjectRatio] = useState(0);
+  const [average, setAverage] = useState(0);
+  const [selectedStaff, setSelectedStaff] = useState('All');
+  var radio_props = [
+    { label: "All", value: "All", },
+    { label: "CS", value: "CS" },
+    { label: "Management", value: "Management" },
+  ];
   useEffect(() => {
-    console.log(route.params.Id);
+    // console.log(route.params.Id);
+    console.log(selectedStaff);
     setData([]);
     var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluatedTeachers?id=${route.params.Id}`;
     fetch(InsertApiURL,
@@ -15,72 +28,93 @@ const EvaluatedTeacher = ({ navigation,route }) => {
       .then((response) => response.json())
       .then((response) => {
         response.forEach(element => {
+          // console.log(element);
           //getting performace ratio...
-          var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult?empNo=${element.Emp_No}`;
+          var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult1?empNo=${element.Emp_No}&staff=${selectedStaff}`;
           fetch(InsertApiURL1,
-              {
-                  method: 'GET',
-              }
+            {
+              method: 'GET',
+            }
           )
-              .then((response) => response.json())
-              .then((response) => {
-                  console.log(response);
-                  setData(data => [...data,
-                  {
-                      Emp_No: element.Emp_No,
-                      Evaluation_on: element.Evaluation_on,
-                      Evaluation_By: element.Evaluation_By,
-                      Academic: response.Academic,
-                      Administration: response.Administration,
-                      Project: response.Project,
-                      Average: response.Average,
-                  }
-                  ])
-              })
-              .catch((error) => {
-                  console.log(error)
-              })
-          //
-
-      });
+            .then((response) => response.json())
+            .then((response) => {
+              // console.log(response);
+              setData(data => [...data,
+              {
+                Emp_No: element.Emp_No,
+                Evaluation_on: element.Evaluation_on,
+                Evaluation_By: element.Evaluation_By,
+                AcademicPercentage: response.AcademicPercentage,
+                AdministrationPercentage: response.AdministrationPercentage,
+                ProjectPercentage: response.ProjectPercentage,
+                AveragePercentage: response.AveragePercentage,
+              }
+              ])
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+        });
       })
       .catch((error) => {
         alert(error)
       })
-  }, [])
+  }, [selectedStaff])
   return (
-    <ImageBackground source={require('../assets/Images/background.png')} resizeMode="cover" style={styles.container}>
-      <View style={styles.innerView} >
-        <FlatList style={{ padding: 7 }}
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ backgroundColor: '#999', alignItems: 'center', padding: 10 }}>
+        <RadioForm
+          //radio button
+          radio_props={radio_props}
+          initial={0}
+          formHorizontal={true}
+          labelHorizontal={true}
+          buttonColor={"#2196f3"}
+          // animation={true}
+          onPress={(value) => { console.log(value); setSelectedStaff(value) }}
+          buttonsize={20}
+          buttonOuterSize={30}
+          selectedButtonColor={"green"}
+          selectedLabelColor={"green"}
+          labelStyle={{ fontSize: 20, marginRight: 10 }}
+        />
+      </View>
+      <View style={{ flex: 1 }}>
+        <FlatList
+          contentContainerStyle={{ paddingBottom: 20 }}
+          showsVerticalScrollIndicator={false}
           data={data}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
-            return <TouchableOpacity style={{ backgroundColor: '#038f7e', borderRadius: 10, marginBottom: 10, padding: 10 }}
-            // onPress={()=>navigation.navigate('TeacherCourses',{Emp_No:item.Emp_No})}
+            return <TouchableOpacity style={{ backgroundColor: '#038f7e', borderRadius: 10, marginBottom: 10, padding: 10, width: '90%', alignSelf: 'center' }}
+            // onPress={()=>navigation.navigate('TeacherCourses',{Emp_No:item.Emp_No})} //navigate to teacher course screen
             >
-              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.Evaluation_on}</Text>
-              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Performace Ratio : {item.Average}</Text>
+              <Text style={{ fontSize: 24, color: 'orange', fontStyle: 'italic', fontWeight: 'bold', textAlign: 'center' }}> {item.Evaluation_on}</Text>
+
+              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Academic : {item.AcademicPercentage}%</Text>
+              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Administration : {item.AdministrationPercentage}%</Text>
+              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Project : {item.ProjectPercentage}%</Text>
+              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Performace Ratio : {item.AveragePercentage}%</Text>
             </TouchableOpacity>
           }
           }
         />
       </View>
-
-    </ImageBackground>
+    </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   innerView: {
     alignSelf: 'center',
-    padding: 20,
-    width: '80%',
-    backgroundColor: 'white',
-    backgroundColor: '#EB984E',
+    // padding: 20,
+    width: '90%',
+    flex: 1,
+    // backgroundColor: '#EB984E',
     borderRadius: 20,
   },
   btn: {

@@ -21,11 +21,12 @@ const AdministrativeQuestions = ({ navigation, route }) => {
         )
             .then((response) => response.json())
             .then((response) => {
+                let count = 1;
                 if (response.forEach != undefined) {
                     response.forEach(element => {
                         setData(data => [...data, {
-                            Qid: element.Qid,
-                            Question: element.Question,
+                            Qid: count++,
+                            Question: element.Question1,
                             Category: element.Category,
                             Selected: '',
                         }])
@@ -114,7 +115,7 @@ const AdministrativeQuestions = ({ navigation, route }) => {
                             keyExtractor={(item, index) => index}
                             renderItem={({ item, index }) => {
                                 return <TouchableOpacity style={styles.card} >
-                                    <Text style={{ fontSize: 20, color: '#eee' }}>Question# : {item.Qid}</Text>
+                                    <Text style={{ fontSize: 20, color: '#eee' }}>Question # {item.Qid}</Text>
                                     <Text style={{ fontSize: 20, color: '#eee' }}>{item.Question}</Text>
                                     <RadioForm
                                         style={styles.radiostyle} //radio button

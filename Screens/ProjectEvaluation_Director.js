@@ -34,11 +34,12 @@ const ProjectEvaluation_Director = ({ navigation, route }) => {
         )
             .then((response) => response.json())
             .then((response) => {
+                let count = 1;
                 if (response.forEach != undefined) {
                     response.forEach(element => {
                         setData(data => [...data, {
-                            Qid: element.Qid,
-                            Question: element.Question,
+                            Qid: count++,
+                            Question: element.Question1,
                             Category: element.Category,
                             Selected: '',
                         }])
@@ -123,13 +124,13 @@ const ProjectEvaluation_Director = ({ navigation, route }) => {
                     </View>
                 ) : (
                     <View style={{ flex: 1 }}>
-                        <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}> {route.params.TeacherName} </Text>
+                        <Text style={{ fontSize: 24, fontFamily: "ArchitectsDaughter-Regular", textAlign: 'center' }}> {route.params.TeacherName} </Text>
                         <FlatList style={{ padding: 7, width: '100%' }} showsVerticalScrollIndicator={false}
                             data={data}
                             keyExtractor={(item, index) => index}
                             renderItem={({ item, index }) => {
                                 return <TouchableOpacity style={styles.card} >
-                                    <Text style={{ fontSize: 20, color: '#eee' }}>Question# : {item.Qid}</Text>
+                                    <Text style={{ fontSize: 20, color: '#eee' }}>Question # {item.Qid}</Text>
                                     <Text style={{ fontSize: 20, color: '#eee' }}>{item.Question}</Text>
                                     <RadioForm
                                         style={styles.radiostyle} //radio button

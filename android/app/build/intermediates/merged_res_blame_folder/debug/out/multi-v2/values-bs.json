@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\Paid Projects\\React Native\\Hamza Noor 2021\\EmployeePerformance\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-bs\\values-bs.xml",
+            "outputFile": "E:\\Paid Projects\\React Native\\Hamza Noor 2021\\EmployeePerformance-main\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-bs\\values-bs.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Dell\\.gradle\\caches\\transforms-3\\5646db46e2cfb43e7b3d42f3054c498c\\transformed\\core-1.5.0\\res\\values-bs\\values-bs.xml",

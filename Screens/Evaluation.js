@@ -45,11 +45,12 @@ const Evaluation = ({ navigation, route }) => {
         )
             .then((response) => response.json())
             .then((response) => {
+                let count = 1;
                 setQuestionsData([]);
                 response.forEach(element => {
                     setQuestionsData(data => [...data, {
-                        Qid: element.Qid,
-                        Question: element.Question,
+                        Qid: count++,
+                        Question: element.Question1,
                         Category: element.Category,
                         Selected: '',
                     }])
@@ -125,7 +126,7 @@ const Evaluation = ({ navigation, route }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff', padding: 10 }}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}> {teacherName} </Text>
+            <Text style={{ fontSize: 24, fontFamily:'ArchitectsDaughter-Regular', textAlign: 'center' }}> {teacherName} </Text>
 
             {
                 isFetched == true ? (
@@ -138,7 +139,7 @@ const Evaluation = ({ navigation, route }) => {
                         keyExtractor={(item, index) => index}
                         renderItem={({ item, index }) => {
                             return <TouchableOpacity style={styles.card} >
-                                <Text style={{ fontSize: 20, color: '#eee' }}>Question# : {item.Qid}</Text>
+                                <Text style={{ fontSize: 20, color: '#eee' }}>Question # {item.Qid}</Text>
                                 <Text style={{ fontSize: 20, color: '#eee' }}>{item.Question}</Text>
                                 <RadioForm
                                     style={styles.radiostyle} //radio button

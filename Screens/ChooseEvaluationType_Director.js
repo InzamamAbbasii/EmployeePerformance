@@ -3,7 +3,8 @@ import { StyleSheet, Text, ImageBackground, TouchableOpacity, View } from 'react
 const ChooseEvaluationType_Director = ({ navigation,route }) => {
     console.log(route.params);
     return (
-            <View style={{backgroundColor:'#fff',flex:1}}>
+        <ImageBackground source={require('../assets/Images/back.png')} resizeMode="cover" style={styles.container}>
+            <View style={{flex:1}}>
                 <View style={styles.texttop}>
                     <Text style={styles.btnText}>Choose Evaluation Type</Text>
                 </View>
@@ -16,6 +17,7 @@ const ChooseEvaluationType_Director = ({ navigation,route }) => {
                     <Text style={styles.btnText}> Project </Text>
                 </TouchableOpacity>
             </View>
+            </ImageBackground>
     )
 }
 

@@ -36,10 +36,11 @@ const Questionnaire = ({ navigation }) => {
     )
       .then((response) => response.json())
       .then((response) => {
+        let count = 1;
         response.forEach(element => {
           setData(data => [...data, {
-            Qid: element.Qid,
-            Question: element.Question,
+            Qid: count++,
+            Question: element.Question1,
             Category: element.Category,
           }])
         });
@@ -63,7 +64,7 @@ const Questionnaire = ({ navigation }) => {
               keyExtractor={(item, index) => index}
               renderItem={(item, index) =>
                 <View style={styles.card}>
-                  <Text style={styles.question}>Question# {item.item.Qid}</Text>
+                  <Text style={styles.question}>Question # {item.item.Qid}</Text>
                   <Text style={styles.question}>{item.item.Question}</Text>
                   <RadioForm
                     style={styles.radiostyle} //radio button

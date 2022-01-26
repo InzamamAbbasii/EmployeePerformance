@@ -5,6 +5,7 @@ const StudentCourses = ({ navigation, route }) => {
     const [name, setName] = useState('');
     const [currentCourses, setCurrentCourses] = useState([]);
     const [isFetched, setIsFetched] = useState(true);
+    const [permission, setPermission] = useState(false);
     useEffect(() => {
         var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Student/getCurrentSemesterCources?regno=${route.params.regno}`;
         fetch(InsertApiURL,
@@ -62,9 +63,26 @@ const StudentCourses = ({ navigation, route }) => {
                 alert(error)
             })
     }, [])
+    useEffect(() => {
+        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Admin/getStudentEvaluationPermission`;
+        fetch(InsertApiURL,
+            {
+                method: 'GET',
+            }
+        )
+            .then((response) => response.json())
+            .then((response) => {
+                console.log('response ::: ', response);
+                setPermission(response);
+            })
+            .catch((error) => {
+                alert(error)
+            })
+    }, []);
+
     return (
         <View style={{ flex: 1, backgroundColor: '#fff', padding: 10 }}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}> {name} </Text>
+            <Text style={{ fontSize: 24, fontFamily: 'ArchitectsDaughter-Regular', textAlign: 'center' }}> {name} </Text>
 
             {
                 isFetched == true ? (
@@ -72,8 +90,8 @@ const StudentCourses = ({ navigation, route }) => {
                         <ActivityIndicator size="large" color="#000" />
                     </View>
                 ) : (
-                    <View style={{flex:1}}>
-                        <SectionList style={{marginBottom:10}}
+                    <View style={{ flex: 1 }}>
+                        <SectionList style={{ marginBottom: 10 }}
                             sections={[
                                 { title: 'Current Courses', data: currentCourses },
                                 { title: 'Previous Courses', data: data },
@@ -84,7 +102,15 @@ const StudentCourses = ({ navigation, route }) => {
                             }
                             keyExtractor={(item, index) => index}
                             renderItem={({ item }) =>
-                                <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Evaluation', { Emp_no: item.Emp_no, Reg_no: item.REG_No, Course: item.Course_desc })}>
+                                <TouchableOpacity style={styles.card} onPress={() => { permission=='true'?(
+                                    navigation.navigate('Evaluation', {
+                                        Emp_no: item.Emp_no,
+                                        Reg_no: item.REG_No,
+                                        Course: item.Course_desc
+                                    })
+                                ):(alert('You are not allowed for Teacher Evalutaion'))
+                                }
+                                }>
                                     <Text style={{ fontSize: 20, color: '#eee' }}>Current Semster : </Text>
                                     <Text style={{ fontSize: 20, color: '#eee' }}>Course_no : {item.Course_no}</Text>
                                     <Text style={{ fontSize: 20, color: '#eee' }}>Course_desc : {item.Course_desc}</Text>
@@ -143,11 +169,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#3EB489',
         justifyContent: 'center',
         marginBottom: 10,
-      },
-      sectionHeaderText: {
+    },
+    sectionHeaderText: {
         fontSize: 25,
         color: 'white',
         textAlign: 'center',
         padding: 7,
-      }
+    }
 })

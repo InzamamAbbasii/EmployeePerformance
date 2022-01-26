@@ -33,13 +33,15 @@ import ChooseEvaluationType_Director from './Screens/ChooseEvaluationType_Direct
 import TeachersList_Director from './Screens/TeacherList_Director';
 import AdministrationEvaluation_Director from './Screens/AdministrationEvaluation_Director';
 import ProjectEvaluation_Director from './Screens/ProjectEvaluation_Director';
+import StudentPermission from './Screens/StudentPermission'
 const Stack = createNativeStackNavigator();
 function App() {  //navigation between screens
   global.ip = '192.168.1.102';
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='FirstScreen' component={FirstScreen} />
+        <Stack.Screen name='FirstScreen' component={FirstScreen} 
+        options={{headerShown:false,}}/> 
         <Stack.Screen name="Login" component={Login}
           options={{
             headerShown: false,
@@ -173,7 +175,7 @@ function App() {  //navigation between screens
         <Stack.Screen name="DirectorDashboard" component={DirectorDashboard}
           options={{
             title: 'DirectorDashboard',
-            // headerShown:false,
+             headerShown:false,
             headerStyle: {
               backgroundColor: '#EB984E'
             },
@@ -361,6 +363,18 @@ function App() {  //navigation between screens
         <Stack.Screen name="ProjectEvaluation_Director" component={ProjectEvaluation_Director}
           options={{
             title: 'ProjectEvaluation_Director',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+        <Stack.Screen name="StudentPermission" component={StudentPermission}
+          options={{
+            title: 'StudentPermission',
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#FFA07A',

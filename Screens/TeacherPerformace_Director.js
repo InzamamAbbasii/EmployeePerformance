@@ -1,15 +1,9 @@
 // Homescreen.js
 import React, { useEffect, useState } from 'react';
 import { Button, View, Text, ToastAndroid, ScrollView, Dimensions, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import Pie from 'react-native-pie';
-import {
-    LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-} from "react-native-chart-kit";
+import { BarChart } from "react-native-chart-kit";
+import RadioForm from "react-native-simple-radio-button";
+
 const TeacherPerformace_Director = ({ navigation, route }) => {
     const [data, setData] = useState([]);
     const [isFetched, setIsFetched] = useState(true);
@@ -18,6 +12,12 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
     const [administrationRatio, setAdministrationRatio] = useState(0);
     const [projectRatio, setProjectRatio] = useState(0);
     const [empName, setEmpName] = useState('');
+    const [selectedStaff, setSelectedStaff] = useState('All');
+    var radio_props = [
+        { label: "All", value: "All", },
+        { label: "CS", value: "CS" },
+        { label: "Management", value: "Management" },
+    ];
     useEffect(() => {
         setData([]);
         var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluatedTeachers?id=${route.params.Id}`;
@@ -30,7 +30,7 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
             .then((response) => {
                 response.forEach(element => {
                     //getting performace ratio...
-                    var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult?empNo=${element.Emp_No}`;
+                    var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult1?empNo=${element.Emp_No}&staff=${selectedStaff}`;
                     fetch(InsertApiURL1,
                         {
                             method: 'GET',
@@ -62,61 +62,81 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
             .catch((error) => {
                 console.log(error)
             })
-    }, [])
+    }, [selectedStaff])
     return (
-        <View style={styles.container} >
+        <View style={{ flex: 1, backgroundColor: '#fff' }} >
             {
                 isFetched == true ? (
                     <View style={[styles.container, styles.horizontal]}>
                         <ActivityIndicator size="large" color="#000" />
                     </View>
                 ) : (
-                    <View style={{ width: '100%', padding: 10, }}>
-                        <FlatList style={{ padding: 7 }}
-                            data={data}
-                            keyExtractor={(item, index) => index}
-                            renderItem={({ item, index }) => {
-                                return <TouchableOpacity style={{ backgroundColor: '#038f7e',width:'100%' ,borderRadius: 10, marginBottom: 10, padding: 10 }}>
-                                    <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> {item.Evaluation_on}</Text>
-                                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>Performace Ratio : </Text>
-                                    <View>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Academic : {((item.Academic/(item.Academic+item.Administration+item.Project))*100).toFixed(2)}%</Text>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Administration : {((item.Administration/(item.Academic+item.Administration+item.Project))*100).toFixed(2)}%</Text>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {((item.Project/(item.Academic+item.Administration+item.Project))*100).toFixed(2)}%</Text>
-                                        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {((((item.Academic/(item.Academic+item.Administration+item.Project))*100)+((item.Administration/(item.Academic+item.Administration+item.Project))*100)+((item.Project/(item.Academic+item.Administration+item.Project))*100))/3).toFixed(2)}%</Text>
-                                    </View>
-                                    <View>
-                                        <BarChart
-                                            data={{
-                                                labels:
-                                                    ['Academic', 'Adm', 'Project','Average'],
-                                                datasets: [
-                                                    {
-                                                        data: [item.Academic, item.Administration,item.Project,item.Average],
+                    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+                        <View style={{ backgroundColor: '#999', alignItems: 'center', padding: 10 }}>
+                            <RadioForm
+                                //radio button
+                                radio_props={radio_props}
+                                initial={0}
+                                formHorizontal={true}
+                                labelHorizontal={true}
+                                buttonColor={"#2196f3"}
+                                // animation={true}
+                                onPress={(value) => { console.log(value); setSelectedStaff(value) }}
+                                buttonsize={20}
+                                buttonOuterSize={30}
+                                selectedButtonColor={"green"}
+                                selectedLabelColor={"green"}
+                                labelStyle={{ fontSize: 20, marginRight: 10 }}
+                            />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <FlatList
+                                contentContainerStyle={{ paddingBottom: 20 }}
+                                data={data}
+                                keyExtractor={(item, index) => index}
+                                renderItem={({ item, index }) => {
+                                    return <TouchableOpacity style={{ backgroundColor: '#038f7e', borderRadius: 10, marginBottom: 10, padding: 10,width:'95%',alignSelf:'center',alignContent:'center' }}>
+                                        <Text style={{ fontSize: 23, color: '#eee', fontWeight: 'bold', fontStyle: 'italic', textAlign: 'center' }}> {item.Evaluation_on}</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>Performace Ratio : </Text>
+                                        <View>
+                                            <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Academic : {((item.Academic / (item.Academic + item.Administration + item.Project)) * 100).toFixed(2)}%</Text>
+                                            <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Administration : {((item.Administration / (item.Academic + item.Administration + item.Project)) * 100).toFixed(2)}%</Text>
+                                            <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {((item.Project / (item.Academic + item.Administration + item.Project)) * 100).toFixed(2)}%</Text>
+                                            <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {((((item.Academic / (item.Academic + item.Administration + item.Project)) * 100) + ((item.Administration / (item.Academic + item.Administration + item.Project)) * 100) + ((item.Project / (item.Academic + item.Administration + item.Project)) * 100)) / 3).toFixed(2)}%</Text>
+                                        </View>
+                                        <View>
+                                            <BarChart
+                                                data={{
+                                                    labels:
+                                                        ['Academic', 'Adm', 'Project', 'Average'],
+                                                    datasets: [
+                                                        {
+                                                            data: [((item.Academic / (item.Academic + item.Administration + item.Project)) * 100).toFixed(2), ((item.Administration / (item.Academic + item.Administration + item.Project)) * 100).toFixed(2), ((item.Project / (item.Academic + item.Administration + item.Project)) * 100).toFixed(2), ((((item.Academic / (item.Academic + item.Administration + item.Project)) * 100) + ((item.Administration / (item.Academic + item.Administration + item.Project)) * 100) + ((item.Project / (item.Academic + item.Administration + item.Project)) * 100)) / 3).toFixed(2)],
+                                                        },
+                                                    ],
+                                                }}
+                                                width={Dimensions.get('window').width - 50}
+                                                // width={280}
+                                                height={220}
+                                                // yAxisLabel={'Rs'}
+                                                chartConfig={{
+                                                    backgroundColor: '#1cc910',
+                                                    backgroundGradientFrom: '#eff3ff',
+                                                    backgroundGradientTo: '#efefef',
+                                                    decimalPlaces: 2,
+                                                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                                    style: {
+                                                        borderRadius: 16,
                                                     },
-                                                ],
-                                            }}
-                                            width={Dimensions.get('window').width - 50}
-                                            // width={280}
-                                            height={220}
-                                            // yAxisLabel={'Rs'}
-                                            chartConfig={{
-                                                backgroundColor: '#1cc910',
-                                                backgroundGradientFrom: '#eff3ff',
-                                                backgroundGradientTo: '#efefef',
-                                                decimalPlaces: 2,
-                                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                                                style: {
+                                                }}
+                                                style={{
+                                                    marginVertical: 8,
                                                     borderRadius: 16,
-                                                },
-                                            }}
-                                            style={{
-                                                marginVertical: 8,
-                                                borderRadius: 16,
-                                            }}
-                                        />
-                                    </View>
-                                    <View style={{alignItems:'center'}}>
+                                                    alignSelf:'center'
+                                                }}
+                                            />
+                                        </View>
+                                        {/* <View style={{alignItems:'center'}}>
                                         <Pie
                                             radius={80}
                                             sections={[
@@ -135,11 +155,12 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
                                             ]}
                                             strokeCap={'butt'}
                                         />
-                                    </View>
-                                </TouchableOpacity>
-                            }
-                            }
-                        />
+                                    </View> */}
+                                    </TouchableOpacity>
+                                }
+                                }
+                            />
+                        </View>
                     </View>
                 )
             }

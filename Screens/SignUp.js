@@ -193,12 +193,12 @@ const styles = StyleSheet.create({
     fontFamily: "IndieFlower-Regular",
     color: "#000000",
     paddingBottom: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     borderBottomWidth:1,
   },
   bottomText:{
-   fontSize: 20,
-   marginLeft:'26%',
+   fontSize: 18,
+   marginLeft:'24%',
     },
   Textinput: {
     width: "75%",
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     width: "90%",
     fontFamily: "SemiBold",
     borderRadius: 25,
-    marginBottom:20,  
+    marginBottom:10,  
   },
   btnText: {
     fontSize: 25,
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     height: 60,
     paddingRight: 10,
-    marginBottom: 20,
+    marginBottom: 10,
     marginLeft: 10,
     borderRadius: 25,
     alignItems: "center",
