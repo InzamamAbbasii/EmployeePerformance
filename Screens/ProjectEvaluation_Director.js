@@ -87,7 +87,7 @@ const ProjectEvaluation_Director = ({ navigation, route }) => {
                     Question: element.Question,
                     QCategory: element.Category,
                     Weight: element.Selected,
-                    Emp_No: route.params.TeacherId,
+                    Emp_No: route.params.EmpNo,
                     Evaluation_on: route.params.TeacherName,
                     Evaluated_By: route.params.LoginId,
                     Role:'Director'

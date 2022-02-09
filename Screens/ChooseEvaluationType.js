@@ -18,7 +18,7 @@ const ChooseEvaluationType = ({ navigation,route }) => {
             }   
                {route.params.AdministrationPermission==true?(
                    <TouchableOpacity style={route.params.AdministrationPermission==true?([styles.userbtn,{backgroundColor:'#FFA07A'}]):([styles.userbtn,{backgroundColor:'#cccccc'}])} 
-                   onPress={() => navigation.navigate('TeachersList',{Id:route.params.Id,Type:"Administrative"})}>
+                   onPress={() => navigation.navigate('TeachersList',{Id:route.params.Id,Type:"Administration"})}>
                    <Text style={styles.btnText}> Administrative </Text>
                </TouchableOpacity>
                ):(null)
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-
+        width:'100%'
     },
     texttop: {
         backgroundColor: 'orange',

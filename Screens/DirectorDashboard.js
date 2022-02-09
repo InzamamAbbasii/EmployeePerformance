@@ -10,7 +10,7 @@ const DirectorDashboard = ({ navigation,route }) => {
           <Text style={styles.btnText}>Director DashBoard</Text>
         </View>
         <TouchableOpacity style={styles.userbtn}
-          onPress={() => navigation.navigate('TeachersList_Director',{Id:route.params.empNo,Role:'Director'})}>
+          onPress={() => navigation.navigate('ChooseEvaluationType_Director',{Id:route.params.empNo,Role:'Director'})}>
           <Text style={styles.btnText}> Start Evaluation </Text>
           <Feather name="chevron-right" size={25}  color="#000"   />
         </TouchableOpacity>

@@ -4,7 +4,18 @@ const TeachersList_Director = ({ navigation, route }) => {
     const [data, setData] = useState([]);
     const [isFetched, setIsFetched] = useState(true);
     useEffect(() => {
-        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Teacher/getteachersList?empno=${route.params.Id}`;
+        const unsub = navigation.addListener('focus', () => {
+            console.log('The screen is focus..');
+            getTeachersList();
+        })
+        return unsub;
+    }, [])
+
+    const getTeachersList = () => {
+        console.log(route.params.LoginId,route.params.EvaluationType)
+        setData([]); setIsFetched(true);
+        // var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Teacher/getteachersList?empno=${route.params.Id}`;
+        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Teacher/getNonEvalutatedTeachersList?empno=${route.params.LoginId}&evalType=${route.params.EvaluationType}`;
         fetch(InsertApiURL,
             {
                 method: 'GET',
@@ -26,8 +37,7 @@ const TeachersList_Director = ({ navigation, route }) => {
                 setIsFetched(false);
                 alert(error);
             })
-
-    }, [])
+    }
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%', backgroundColor: '#ddd' }}>
             {
@@ -44,7 +54,30 @@ const TeachersList_Director = ({ navigation, route }) => {
                         keyExtractor={(item, index) => index}
                         renderItem={({ item, index }) => {
                             return (<View>
-                                <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ChooseEvaluationType_Director', { LoginId: route.params.Id, EmpNo: item.EmpNo, empName: item.tName })}>
+                                <TouchableOpacity style={styles.card} onPress={() => {
+                                    route.params.EvaluationType=='Administration'&&(
+                                        navigation.navigate('AdministrationEvaluation_Director', {
+                                            // LoginId: route.params.Id,
+                                            // EmpNo: item.EmpNo,
+                                            // empName: item.tName,
+                                            LoginId: route.params.LoginId,
+                                            EmpNo: item.EmpNo,
+                                            TeacherName: item.tName,
+                                            EvaluationType: 'Administration'
+                                        })
+                                    )
+                                    route.params.EvaluationType=='Project'&&(
+                                        navigation.navigate('ProjectEvaluation_Director', {
+                                            // LoginId: route.params.Id,
+                                            // EmpNo: item.EmpNo,
+                                            // empName: item.tName,
+                                            LoginId: route.params.LoginId,
+                                            EmpNo: item.EmpNo,
+                                            TeacherName: item.tName,
+                                            EvaluationType: 'Administration'
+                                        })
+                                    )
+                                }}>
                                     <Text style={{ fontSize: 20, color: '#000', textAlign: 'center' }}>{item.EmpNo}  </Text>
                                     <Text style={{ fontSize: 20, color: '#000', textAlign: 'center' }}>{item.tName}  </Text>
                                 </TouchableOpacity>

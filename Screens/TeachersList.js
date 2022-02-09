@@ -3,31 +3,41 @@ import { StyleSheet, Text, View, ActivityIndicator, FlatList, TouchableOpacity }
 const TeachersList = ({ navigation, route }) => {
     const [data, setData] = useState([]);
     const [isFetched, setIsFetched] = useState(true);
+    console.log(route.params);
     useEffect(() => {
-        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Teacher/getteachersList?empno=${route.params.Id}`;
-        fetch(InsertApiURL,
-            {
-                method: 'GET',
-            }
-        )
-            .then((response) => response.json())
-            .then((response) => {
-                response.forEach(element => {
-                    setData(data => [...data,
-                    {
-                        EmpNo: element.EmpNo,
-                        tName: element.tName,
-                    }
-                    ])
-                });
-                setIsFetched(false);
-            })
-            .catch((error) => {
-                setIsFetched(false);
-                alert(error);
-            })
-
-    }, [])
+        const unsub  = navigation.addListener('focus',()=>{
+            console.log('The screen is focus..');
+            getTeachersList();
+        })
+        return unsub;
+      }, [])
+  
+      const getTeachersList = () => {
+          setData([]);setIsFetched(true);
+          // var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Teacher/getteachersList?empno=${route.params.Id}`;
+          var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Teacher/getNonEvalutatedTeachersList?empno=${route.params.Id}&evalType=${route.params.Type}`;
+          fetch(InsertApiURL,
+              {
+                  method: 'GET',
+              }
+          )
+              .then((response) => response.json())
+              .then((response) => {
+                  response.forEach(element => {
+                      setData(data => [...data,
+                      {
+                          EmpNo: element.EmpNo,
+                          tName: element.tName,
+                      }
+                      ])
+                  });
+                  setIsFetched(false);
+              })
+              .catch((error) => {
+                  setIsFetched(false);
+                  alert(error);
+              })
+      }
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%', backgroundColor: '#ddd' }}>
             {

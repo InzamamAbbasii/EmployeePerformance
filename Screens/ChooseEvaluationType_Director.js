@@ -1,23 +1,29 @@
-import React,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, ImageBackground, TouchableOpacity, View } from 'react-native'
-const ChooseEvaluationType_Director = ({ navigation,route }) => {
-    console.log(route.params);
+const ChooseEvaluationType_Director = ({ navigation, route }) => {
     return (
         <ImageBackground source={require('../assets/Images/back.png')} resizeMode="cover" style={styles.container}>
-            <View style={{flex:1}}>
+            <View style={styles.container}>
                 <View style={styles.texttop}>
                     <Text style={styles.btnText}>Choose Evaluation Type</Text>
                 </View>
-               <TouchableOpacity style={styles.userbtn}
-                    onPress={() => navigation.navigate('AdministrationEvaluation_Director',{LoginId:route.params.LoginId,TeacherId:route.params.EmpNo,TeacherName:route.params.empName})}>
+                <TouchableOpacity style={styles.userbtn}
+                    onPress={() => navigation.navigate('TeachersList_Director', {
+                        LoginId: route.params.Id,
+                        EvaluationType:'Administration'
+                    })}>
                     <Text style={styles.btnText}> Administration </Text>
                 </TouchableOpacity>
+                
                 <TouchableOpacity style={styles.userbtn}
-                    onPress={() => navigation.navigate('ProjectEvaluation_Director',{LoginId:route.params.LoginId,TeacherId:route.params.EmpNo,TeacherName:route.params.empName})}>
+                    onPress={() => navigation.navigate('TeachersList_Director', {
+                        LoginId: route.params.Id,
+                        EvaluationType:'Project'
+                    })}>
                     <Text style={styles.btnText}> Project </Text>
                 </TouchableOpacity>
             </View>
-            </ImageBackground>
+        </ImageBackground>
     )
 }
 
@@ -26,23 +32,22 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-
+        width:'100%'
     },
     texttop: {
         backgroundColor: 'orange',
         width: '90%',
         height: '10%',
         borderRadius: 10,
-        alignSelf:'center',
-        marginTop:15,
-        marginBottom: 10,
+        alignSelf: 'center',
+        marginBottom: 20,
     },
     userbtn: {
         backgroundColor: "#FFA07A",
         padding: 10,
-       alignSelf:'center',
+        alignSelf: 'center',
         marginTop: 20,
-        width: "90%",
+        width: "80%",
         fontFamily: "SemiBold",
         borderRadius: 15,
     },
