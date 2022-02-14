@@ -29,6 +29,12 @@ const DirectorDashboard = ({ navigation,route }) => {
           <Text style={styles.btnText}> View Performace </Text>
           <Feather name="bar-chart" size={25}  color="#000"   />
         </TouchableOpacity>
+ 
+        <TouchableOpacity style={styles.userbtn}
+          onPress={() => navigation.navigate('AllocateTask',{Id:route.params.empNo})}>
+          <Text style={styles.btnText}>  Allocate Task </Text>
+          <Feather name="chevron-right" size={25}  color="#000"   />
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   )

@@ -34,6 +34,7 @@ import TeachersList_Director from './Screens/TeacherList_Director';
 import AdministrationEvaluation_Director from './Screens/AdministrationEvaluation_Director';
 import ProjectEvaluation_Director from './Screens/ProjectEvaluation_Director';
 import StudentPermission from './Screens/StudentPermission'
+import AllocateTask from './Screens/AllocateTask';
 const Stack = createNativeStackNavigator();
 function App() {  //navigation between screens
   global.ip = '192.168.1.102';
@@ -384,6 +385,20 @@ function App() {  //navigation between screens
               fontWeight: 'bold',
             },
           }} />
+
+        <Stack.Screen name="AllocateTask" component={AllocateTask}
+          options={{
+            title: 'AllocateTask',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
