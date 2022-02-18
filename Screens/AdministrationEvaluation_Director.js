@@ -76,7 +76,7 @@ const AdministrationEvaluation_Director = ({ navigation, route }) => {
         console.log('....');
         data.forEach(element => {
             if (element.Selected !== '') {
-                console.log(route.params.TeacherId,element.Qid,element.Question,element.Category,route.params.CourseName,element.Selected,route.params.TeacherName,route.params.LoginId);
+                console.log(route.params.TeacherId, element.Qid, element.Question, element.Category, route.params.CourseName, element.Selected, route.params.TeacherName, route.params.LoginId);
                 // console.log(route.params.Reg_no,element.Qid,route.params.Emp_no,route.params.Course ,element.Selected,teacherName);
                 var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/addAdministrationEvaluation`;
                 var headers = {
@@ -91,7 +91,7 @@ const AdministrationEvaluation_Director = ({ navigation, route }) => {
                     Emp_No: route.params.EmpNo,
                     Evaluation_on: route.params.TeacherName,
                     Evaluated_By: route.params.LoginId,
-                    Role:'Director'
+                    Role: 'Director'
                 }
                 fetch(InsertApiURL,
                     {
@@ -155,11 +155,14 @@ const AdministrationEvaluation_Director = ({ navigation, route }) => {
                                 </TouchableOpacity>
                             }
                             }
+                            ListFooterComponent={
+                                <TouchableOpacity style={styles.btnTouchable}
+                                    onPress={() => saveEvaluation()}>
+                                    <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
+                                </TouchableOpacity>
+                            }
                         />
-                        <TouchableOpacity style={styles.btnTouchable}
-                        onPress={()=>saveEvaluation()}>
-                            <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
-                        </TouchableOpacity>
+
                     </View>
                 )
             }
@@ -223,14 +226,15 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     btnTouchable: {
-        backgroundColor: '#f44336',
+        backgroundColor: 'blue',
         borderWidth: 1,
         borderColor: '#eee',
         height: 55,
         borderRadius: 10,
         width: '90%',
         justifyContent: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginBottom:25,
     }
 }
 )

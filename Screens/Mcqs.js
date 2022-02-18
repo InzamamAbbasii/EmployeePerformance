@@ -1,14 +1,44 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { View, SafeAreaView, Button, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 const Mcqs = ({ navigation }) => {
-  const [excellentWeight, setExcellentWeight] = useState(0);
-  const [goodWeight, setGoodWeight] = useState(0);
-  const [avgWeight, setAvgWeight] = useState(0);
-  const [poorWeight, setPoorWeight] = useState(0);
+  const [excellentWeight, setExcellentWeight] = useState('');
+  const [goodWeight, setGoodWeight] = useState('');
+  const [avgWeight, setAvgWeight] = useState('');
+  const [poorWeight, setPoorWeight] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
+  useEffect(() => {
+    getMcqsWeight();
+  }, [])
+  
+  const getMcqsWeight = () => {
+    setIsFetching(true);
+    var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Admin/getMcqsWeight`;
+    fetch(InsertApiURL,
+      {
+        method: 'GET',
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        if(response!='false'){
+          setExcellentWeight(response.Excellent.toString());
+          setGoodWeight(response.Good.toString());
+          setAvgWeight(response.Average.toString());
+          setPoorWeight(response.Poor.toString());
+        }
+      })
+      .catch((error) => {
+        alert(error)
+      }).finally(() => {
+        setIsFetching(false);
+      })
+  }
+
   const insertMCQsWeightage=()=>{
-    if(excellentWeight==0 || goodWeight==0 || avgWeight==0 || poorWeight==0){
+    if(excellentWeight.length==0 || goodWeight.length==0 || avgWeight.length==0 || poorWeight.length==0){
       alert('Please enter required values');
     }else{
       console.log(excellentWeight,goodWeight,avgWeight,poorWeight);
@@ -51,24 +81,28 @@ const Mcqs = ({ navigation }) => {
           <View style={styles.txtView}>
             <Text style={styles.text}>Excellent</Text>
             <TextInput style={styles.input}
+            value={excellentWeight}
             onChangeText={(txt)=>setExcellentWeight(txt)}
             />
           </View>
           <View style={styles.txtView}>
             <Text style={styles.text}>Good</Text>
             <TextInput style={styles.input} 
+            value={goodWeight}
             onChangeText={(txt)=>setGoodWeight(txt)}
             />
           </View>
           <View style={styles.txtView}>
             <Text style={styles.text}>Average</Text>
             <TextInput style={styles.input} 
+            value={avgWeight}
             onChangeText={(txt)=>setAvgWeight(txt)}
             />
           </View>
           <View style={styles.txtView}>
             <Text style={styles.text}>Poor</Text>
             <TextInput style={styles.input} 
+            value={poorWeight}
             onChangeText={(txt)=>setPoorWeight(txt)}/>
           </View>
           <TouchableOpacity style={styles.userbtn}

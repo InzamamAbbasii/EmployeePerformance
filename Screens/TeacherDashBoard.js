@@ -24,11 +24,11 @@ const TeacherDashBoard = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((response) => {
         response.forEach(element => {
-          setPermission(element.Permission=="Allow"?true:false);
+          setPermission(element.Permission == 1 ? true : false);
           setEmpName(element.Emp_firstname + element.Emp_middle + " " + element.Emp_lastname)
-          setAcademicPermission(element.AcademicPermission=="true"?true:false);
-          setAdministrationPermission(element.AdministrationPermission=="true"?true:false)
-          setProjectPermission(element.ProjectPermission=="true"?true:false)
+          setAcademicPermission(element.AcademicPermission == "true" ? true : false);
+          setAdministrationPermission(element.AdministrationPermission == "true" ? true : false)
+          setProjectPermission(element.ProjectPermission == "true" ? true : false)
           setData(data => [...data,
           {
             Emp_no: element.Emp_no,
@@ -66,27 +66,56 @@ const TeacherDashBoard = ({ navigation, route }) => {
   }, [])
   return (
     <ImageBackground source={require('../assets/Images/back.png')} resizeMode="cover" style={styles.container}>
-    <View style={{flex:1}}>
-      <View style={styles.texttop}>
-        <Text style={styles.btnText}>{empName}</Text>
+      <View style={{ flex: 1 }}>
+        <View style={styles.texttop}>
+          <Text style={styles.btnText}>{empName}</Text>
+        </View>
+        {/* <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>Performace Ratio : </Text>
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Academic : {academic}</Text>
+          <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Administration : {administrationRatio}</Text>
+          <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {projectRatio}</Text>
+          <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {average}</Text>
+        </View> */}
+        <TouchableOpacity style={[styles.userbtn, permission == true ? { backgroundColor: '#FFA07A' } : { backgroundColor: '#cccccc' }]} disabled={!permission}
+          onPress={() => navigation.navigate('ChooseEvaluationType', { Id: route.params.empNo, AcademicPermission: academicPermission, AdministrationPermission: administrationPermission })}>
+          <Text style={styles.btnText}> Start Evaluation </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.userbtn}
+          onPress={() => navigation.navigate('EvaluatedTeacher', { Id: route.params.empNo })}>
+          {
+            permission == true ? (
+              <Text style={styles.btnText}>Evaluated Teacher</Text>
+            ) : (
+              <Text style={styles.btnText}>View Performace</Text>
+            )
+          }
+        </TouchableOpacity>
+
+
+        {/*-------------------------------- FOR TASK START------------------------------------  */}
+        {/* uncomment this button to add kpi bases on Employee Id */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Kpi1', { Id: route.params.empNo })}
+          style={styles.kpibutton}>
+          <Text style={styles.kpibuttonText}> ADD KPI Weightage</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.userbtn}
+          onPress={() => navigation.navigate('EvaluatedTeacherByKpi', { Id: route.params.empNo })}>
+          {
+            permission == true ? (
+              <Text style={styles.btnText}>Evaluated Teacher By Kpi </Text>
+            ) : (
+              <Text style={styles.btnText}>View Performace By Kpi</Text>
+            )
+          }
+        </TouchableOpacity>
+
+
+        {/*-------------------------------- FOR TASK END------------------------------------  */}
       </View>
-      <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>Performace Ratio : </Text>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Academic : {academic}</Text>
-        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Administration : {administrationRatio}</Text>
-        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Project : {projectRatio}</Text>
-        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 30 }}>Average : {average}</Text>
-      </View>
-          <TouchableOpacity  style={[styles.userbtn,permission==true?{backgroundColor:'#FFA07A'}:{backgroundColor:'#cccccc'}]} disabled={!permission}
-            onPress={() => navigation.navigate('ChooseEvaluationType', { Id: route.params.empNo,AcademicPermission:academicPermission,AdministrationPermission:administrationPermission })}>
-            <Text style={styles.btnText}> Start Evaluation </Text>
-          </TouchableOpacity>
-      <TouchableOpacity style={styles.userbtn}
-        onPress={() => navigation.navigate('EvaluatedTeacher', { Id: route.params.empNo })}>
-        <Text style={styles.btnText}>Evaluated Teacher</Text>
-      </TouchableOpacity>
-    </View>
-  </ImageBackground>
+    </ImageBackground>
   )
 }
 const styles = StyleSheet.create({
@@ -95,6 +124,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
+  },
+  kpibutton:{
+      backgroundColor: "#000",
+      borderRadius: 30,
+      height: 80,
+      marginHorizontal: 10,
+      justifyContent: 'center',
+      marginVertical: 10,
+      marginTop:30,
+  },
+  kpibuttonText:{
+      fontSize: 20,
+      color: "#FFFFFF",
+      alignContent: 'center',
+      fontWeight: "bold",
+      fontFamily: '',
+      fontStyle: 'italic',
+      alignSelf: "center",
+      textTransform: "uppercase",
+      marginBottom: 10
   },
   texttop: {
     backgroundColor: 'orange',

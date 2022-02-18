@@ -1,6 +1,6 @@
 // Homescreen.js
 import React, { useState, useEffect } from 'react';
-import { Button, View, Text, TextInput, ScrollView, ImageBackground, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { Button, View, Text, TextInput, ScrollView, ImageBackground, ActivityIndicator, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import RadioForm from "react-native-simple-radio-button";
 
 const EvaluatedTeacher = ({ navigation, route }) => {
@@ -10,15 +10,17 @@ const EvaluatedTeacher = ({ navigation, route }) => {
   const [projectRatio, setProjectRatio] = useState(0);
   const [average, setAverage] = useState(0);
   const [selectedStaff, setSelectedStaff] = useState('All');
+  const [isFetch, setIsFetch] = useState(false);
+
   var radio_props = [
     { label: "All", value: "All", },
     { label: "CS", value: "CS" },
     { label: "Management", value: "Management" },
   ];
   useEffect(() => {
-    // console.log(route.params.Id);
-    console.log(selectedStaff);
-    setData([]);
+    console.log(route.params.Id);
+    // console.log(selectedStaff);
+    setData([]); setIsFetch(true);
     var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluatedTeachers?id=${route.params.Id}`;
     fetch(InsertApiURL,
       {
@@ -27,6 +29,7 @@ const EvaluatedTeacher = ({ navigation, route }) => {
     )
       .then((response) => response.json())
       .then((response) => {
+        // console.log(response);
         response.forEach(element => {
           // console.log(element);
           //getting performace ratio...
@@ -52,17 +55,17 @@ const EvaluatedTeacher = ({ navigation, route }) => {
               ])
             })
             .catch((error) => {
-              console.log(error)
+              alert(error)
             })
         });
       })
       .catch((error) => {
         alert(error)
-      })
+      }).finally(() => setIsFetch(false));
   }, [selectedStaff])
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View style={{ backgroundColor: '#999', alignItems: 'center', padding: 10 }}>
+      <View style={{ backgroundColor: '#999', alignItems: 'center', padding: 10, marginBottom: 10 }}>
         <RadioForm
           //radio button
           radio_props={radio_props}
@@ -70,7 +73,7 @@ const EvaluatedTeacher = ({ navigation, route }) => {
           formHorizontal={true}
           labelHorizontal={true}
           buttonColor={"#2196f3"}
-          // animation={true}
+          animation={false}
           onPress={(value) => { console.log(value); setSelectedStaff(value) }}
           buttonsize={20}
           buttonOuterSize={30}
@@ -79,27 +82,35 @@ const EvaluatedTeacher = ({ navigation, route }) => {
           labelStyle={{ fontSize: 20, marginRight: 10 }}
         />
       </View>
-      <View style={{ flex: 1 }}>
-        <FlatList
-          contentContainerStyle={{ paddingBottom: 20 }}
-          showsVerticalScrollIndicator={false}
-          data={data}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) => {
-            return <TouchableOpacity style={{ backgroundColor: '#038f7e', borderRadius: 10, marginBottom: 10, padding: 10, width: '90%', alignSelf: 'center' }}
-            // onPress={()=>navigation.navigate('TeacherCourses',{Emp_No:item.Emp_No})} //navigate to teacher course screen
-            >
-              <Text style={{ fontSize: 24, color: 'orange', fontStyle: 'italic', fontWeight: 'bold', textAlign: 'center' }}> {item.Evaluation_on}</Text>
+      {
+        isFetch == true ? (
+          <View>
+            <ActivityIndicator color={'red'} size={'large'} />
+          </View>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <FlatList
+              contentContainerStyle={{ paddingBottom: 20 }}
+              showsVerticalScrollIndicator={false}
+              data={data}
+              keyExtractor={(item, index) => index}
+              renderItem={({ item, index }) => {
+                return <View style={{ backgroundColor: '#038f7e', borderRadius: 10, marginBottom: 10, padding: 10, width: '90%', alignSelf: 'center' }}
+                // onPress={()=>navigation.navigate('TeacherCourses',{Emp_No:item.Emp_No})} //navigate to teacher course screen
+                >
+                  <Text style={{ fontSize: 24, color: 'orange', fontStyle: 'italic', fontWeight: 'bold', textAlign: 'center' }}> {item.Evaluation_on}</Text>
 
-              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Academic : {item.AcademicPercentage}%</Text>
-              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Administration : {item.AdministrationPercentage}%</Text>
-              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Project : {item.ProjectPercentage}%</Text>
-              <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Performace Ratio : {item.AveragePercentage}%</Text>
-            </TouchableOpacity>
-          }
-          }
-        />
-      </View>
+                  <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Academic : {item.AcademicPercentage}%</Text>
+                  <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Administration : {item.AdministrationPercentage}%</Text>
+                  <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Project : {item.ProjectPercentage}%</Text>
+                  <Text style={{ fontSize: 20, color: '#eee', textAlign: 'center' }}> Performace Ratio : {item.AveragePercentage}%</Text>
+                </View>
+              }
+              }
+            />
+          </View>
+        )
+      }
     </View>
   );
 }

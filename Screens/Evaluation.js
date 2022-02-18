@@ -37,6 +37,9 @@ const Evaluation = ({ navigation, route }) => {
                 console.log(error)
             })
         //get all question from database
+        getAcademicQuestions();
+    }, [])
+    const getAcademicQuestions = () => {
         var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Teacher/getAcademicQuestions`;
         fetch(InsertApiURL,
             {
@@ -60,7 +63,7 @@ const Evaluation = ({ navigation, route }) => {
             .catch((error) => {
                 console.log(error)
             })
-    }, [])
+    }
 
     const onChangeValue = (qid, itemSelected) => {
         console.log(qid, itemSelected);
@@ -98,7 +101,7 @@ const Evaluation = ({ navigation, route }) => {
                     Emp_No: route.params.Emp_no,
                     Evaluation_on: teacherName,
                     Evaluated_By: route.params.Reg_no,
-                    Role:'Student'
+                    Role: 'Student'
                 }
                 fetch(InsertApiURL,
                     {
@@ -126,7 +129,7 @@ const Evaluation = ({ navigation, route }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff', padding: 10 }}>
-            <Text style={{ fontSize: 24, fontFamily:'ArchitectsDaughter-Regular', textAlign: 'center' }}> {teacherName} </Text>
+            <Text style={{ fontSize: 24, fontFamily: 'ArchitectsDaughter-Regular', textAlign: 'center' }}> {teacherName} </Text>
 
             {
                 isFetched == true ? (
@@ -135,10 +138,11 @@ const Evaluation = ({ navigation, route }) => {
                     </View>
                 ) : (
                     <FlatList style={{ padding: 7 }}
+                        showsVerticalScrollIndicator={false}
                         data={questionsData}
                         keyExtractor={(item, index) => index}
                         renderItem={({ item, index }) => {
-                            return <TouchableOpacity style={styles.card} >
+                            return <View style={styles.card} >
                                 <Text style={{ fontSize: 20, color: '#eee' }}>Question # {item.Qid}</Text>
                                 <Text style={{ fontSize: 20, color: '#eee' }}>{item.Question}</Text>
                                 <RadioForm
@@ -160,16 +164,18 @@ const Evaluation = ({ navigation, route }) => {
                                     selectedButtonColor={"green"}
                                     selectedLabelColor={"#fff"}
                                     labelStyle={{ fontSize: 20 }} />
-                            </TouchableOpacity>
+                            </View>
                         }
+                        }
+                        ListFooterComponent={
+                            <TouchableOpacity style={styles.btnTouchable}
+                                onPress={() => detail()}>
+                                <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
+                            </TouchableOpacity>
                         }
                     />
                 )
             }
-            <TouchableOpacity style={styles.btnTouchable}
-                onPress={() => detail()}>
-                <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
-            </TouchableOpacity>
         </View>
     )
 }
@@ -178,12 +184,14 @@ export default Evaluation;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center"
+        justifyContent: "center",
+        backgroundColor:'#ddd'
     },
     horizontal: {
         flexDirection: "row",
         justifyContent: "space-around",
-        padding: 10
+        padding: 10,
+        backgroundColor:'#ddd'
     },
     card: {
         borderRadius: 20,
@@ -201,13 +209,14 @@ const styles = StyleSheet.create({
         elevation: 9,
     },
     btnTouchable: {
-        backgroundColor: '#f44336',
+        backgroundColor: 'blue',
         borderWidth: 1,
         borderColor: '#eee',
         height: 55,
         borderRadius: 10,
         width: '90%',
         justifyContent: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginBottom:25,
     }
 })

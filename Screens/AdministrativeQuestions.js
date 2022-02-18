@@ -75,7 +75,7 @@ const AdministrativeQuestions = ({ navigation, route }) => {
                     Emp_No: route.params.EmpNo,
                     Evaluation_on: route.params.empName,
                     Evaluated_By: route.params.LoginId,
-                    Role:'Teacher'
+                    Role: 'Teacher'
                 }
                 fetch(InsertApiURL,
                     {
@@ -139,11 +139,15 @@ const AdministrativeQuestions = ({ navigation, route }) => {
                                 </TouchableOpacity>
                             }
                             }
+                            ListFooterComponent={
+                                <TouchableOpacity style={styles.btnTouchable}
+                                onPress={() => saveEvaluation()}>
+                                <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
+                            </TouchableOpacity>
+                            }
                         />
-                        <TouchableOpacity style={styles.btnTouchable}
-                        onPress={()=>saveEvaluation()}>
-                            <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
-                        </TouchableOpacity>
+                              
+
                     </View>
                 )
             }
@@ -208,7 +212,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     btnTouchable: {
-        backgroundColor: '#f44336',
+        backgroundColor: 'blue',
         borderWidth: 1,
         borderColor: '#eee',
         height: 55,
@@ -216,7 +220,7 @@ const styles = StyleSheet.create({
         width: '90%',
         justifyContent: 'center',
         alignSelf: 'center',
-        marginBottom: 10,
+        marginBottom: 25,
     }
 }
 )

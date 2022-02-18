@@ -35,6 +35,14 @@ import AdministrationEvaluation_Director from './Screens/AdministrationEvaluatio
 import ProjectEvaluation_Director from './Screens/ProjectEvaluation_Director';
 import StudentPermission from './Screens/StudentPermission'
 import AllocateTask from './Screens/AllocateTask';
+
+import NotEvaluatedTeachers from './Screens/NotEvaluatedTeachers';
+import Kpi1 from './Screens/Kpi1';
+import TeacherPerformace_Director1 from './Screens/TeacherPerformance_Director1';
+import EvaluatedTeacherByKpi from './Screens/EvaluatedTeacherByKpi';
+import Teachers_Info from './Screens/Teachers_Info';
+import AddOrEditTeacher from './Screens/AddOrEditTeacher';
+
 const Stack = createNativeStackNavigator();
 function App() {  //navigation between screens
   global.ip = '192.168.1.102';
@@ -389,6 +397,84 @@ function App() {  //navigation between screens
         <Stack.Screen name="AllocateTask" component={AllocateTask}
           options={{
             title: 'AllocateTask',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+
+        <Stack.Screen name="NotEvaluatedTeachers" component={NotEvaluatedTeachers}
+          options={{
+            title: 'NotEvaluatedTeachers',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+
+        <Stack.Screen name="Kpi1" component={Kpi1}
+          options={{
+            title: 'Kpi1',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+
+        <Stack.Screen name="TeacherPerformace_Director1" component={TeacherPerformace_Director1}
+          options={{
+            title: 'TeacherPerformace_Director1',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+
+        <Stack.Screen name="EvaluatedTeacherByKpi" component={EvaluatedTeacherByKpi}
+          options={{
+            title: 'EvaluatedTeacherByKpi',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+
+        <Stack.Screen name="Teachers_Info" component={Teachers_Info}
+          options={{
+            title: 'Teachers_Info',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#FFA07A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} />
+
+        <Stack.Screen name="AddOrEditTeacher" component={AddOrEditTeacher}
+          options={{
+            title: 'AddOrEditTeacher',
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#FFA07A',

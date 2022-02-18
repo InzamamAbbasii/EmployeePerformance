@@ -6,7 +6,7 @@ import RadioForm from "react-native-simple-radio-button";
 
 const TeacherPerformace_Director = ({ navigation, route }) => {
     const [data, setData] = useState([]);
-    const [isFetched, setIsFetched] = useState(true);
+    const [isFetched, setIsFetched] = useState(false);
     const [average, setAverage] = useState(0);
     const [academic, setAcademic] = useState(0);
     const [administrationRatio, setAdministrationRatio] = useState(0);
@@ -19,52 +19,107 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
         { label: "Management", value: "Management" },
     ];
     useEffect(() => {
+        getEvaluationResult();
+        // var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluatedTeachers?id=${route.params.Id}`;
+        // fetch(InsertApiURL,
+        //     {
+        //         method: 'GET',
+        //     }
+        // )
+        //     .then((response) => response.json())
+        //     .then((response) => {
+        //         response.forEach(element => {
+        //             //getting performace ratio...
+        //             var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult1?empNo=${element.Emp_No}&staff=${selectedStaff}`;
+        //             fetch(InsertApiURL1,
+        //                 {
+        //                     method: 'GET',
+        //                 }
+        //             )
+        //                 .then((response) => response.json())
+        //                 .then((response) => {
+        //                     // console.log(response);
+        //                     setData(data => [...data,
+        //                     {
+        //                         Emp_No: element.Emp_No,
+        //                         Evaluation_on: element.Evaluation_on,
+        //                         Evaluation_By: element.Evaluation_By,
+        //                         Academic: response.Academic,
+        //                         Administration: response.Administration,
+        //                         Project: response.Project,
+        //                         Average: response.Average,
+        //                     }
+        //                     ])
+        //                 })
+        //                 .catch((error) => {
+        //                     console.log(error)
+        //                 })
+        //             //
+
+        //         });
+        //         setIsFetched(false);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error)
+        //     })
+    }, [selectedStaff])
+
+    const getEvaluationResult = () => {
+        setIsFetched(true);
+        //getting performace ratio...
         setData([]);
-        var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluatedTeachers?id=${route.params.Id}`;
-        fetch(InsertApiURL,
+        var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult11?empNo=${route.params.Id}&staff=${selectedStaff}`;
+        fetch(InsertApiURL1,
             {
                 method: 'GET',
             }
         )
             .then((response) => response.json())
             .then((response) => {
-                response.forEach(element => {
-                    //getting performace ratio...
-                    var InsertApiURL1 = `http://${ip}/EmpPerformanceApi/api/Evaluation/getEvaluationResult1?empNo=${element.Emp_No}&staff=${selectedStaff}`;
-                    fetch(InsertApiURL1,
+                console.log(response[0].Emp_No);
+                if (response == "false") {
+                    alert('no record found')
+                } else {
+                    response.forEach(element => {
+                        setData(data => [...data,
                         {
-                            method: 'GET',
+                            Emp_No: element.Emp_No,
+                            Evaluation_on: element.Evaluation_on,
+                            Evaluation_By: element.Evaluation_By,
+                            Academic: element.Academic,
+                            Administration: element.Administration,
+                            Project: element.Project,
+                            Average: element.Average,
                         }
-                    )
-                        .then((response) => response.json())
-                        .then((response) => {
-                            console.log(response);
-                            setData(data => [...data,
-                            {
-                                Emp_No: element.Emp_No,
-                                Evaluation_on: element.Evaluation_on,
-                                Evaluation_By: element.Evaluation_By,
-                                Academic: response.Academic,
-                                Administration: response.Administration,
-                                Project: response.Project,
-                                Average: response.Average,
-                            }
-                            ])
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
-                    //
-
-                });
-                setIsFetched(false);
+                        ])
+                    });
+                }
             })
             .catch((error) => {
-                console.log(error)
-            })
-    }, [selectedStaff])
+                alert(error)
+            }).finally(() => { setIsFetched(false) })
+
+    }
+
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }} >
+            <View style={{ backgroundColor: '#999', alignItems: 'center', padding: 10 }}>
+                <RadioForm
+                    //radio button
+                    radio_props={radio_props}
+                    initial={0}
+                    formHorizontal={true}
+                    labelHorizontal={true}
+                    buttonColor={"#2196f3"}
+                    // animation={true}
+                    onPress={(value) => { console.log(value); setSelectedStaff(value) }}
+                    buttonsize={20}
+                    buttonOuterSize={30}
+                    selectedButtonColor={"green"}
+                    selectedLabelColor={"green"}
+                    labelStyle={{ fontSize: 20, marginRight: 10 }}
+                />
+            </View>
             {
                 isFetched == true ? (
                     <View style={[styles.container, styles.horizontal]}>
@@ -72,30 +127,13 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
                     </View>
                 ) : (
                     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-                        <View style={{ backgroundColor: '#999', alignItems: 'center', padding: 10 }}>
-                            <RadioForm
-                                //radio button
-                                radio_props={radio_props}
-                                initial={0}
-                                formHorizontal={true}
-                                labelHorizontal={true}
-                                buttonColor={"#2196f3"}
-                                // animation={true}
-                                onPress={(value) => { console.log(value); setSelectedStaff(value) }}
-                                buttonsize={20}
-                                buttonOuterSize={30}
-                                selectedButtonColor={"green"}
-                                selectedLabelColor={"green"}
-                                labelStyle={{ fontSize: 20, marginRight: 10 }}
-                            />
-                        </View>
                         <View style={{ flex: 1 }}>
                             <FlatList
                                 contentContainerStyle={{ paddingBottom: 20 }}
                                 data={data}
                                 keyExtractor={(item, index) => index}
                                 renderItem={({ item, index }) => {
-                                    return <TouchableOpacity style={{ backgroundColor: '#038f7e', borderRadius: 10, marginBottom: 10, padding: 10,width:'95%',alignSelf:'center',alignContent:'center' }}>
+                                    return <TouchableOpacity style={{ backgroundColor: '#038f7e', borderRadius: 10, marginBottom: 10, padding: 10, width: '95%', alignSelf: 'center', alignContent: 'center' }}>
                                         <Text style={{ fontSize: 23, color: '#eee', fontWeight: 'bold', fontStyle: 'italic', textAlign: 'center' }}> {item.Evaluation_on}</Text>
                                         <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>Performace Ratio : </Text>
                                         <View>
@@ -132,7 +170,7 @@ const TeacherPerformace_Director = ({ navigation, route }) => {
                                                 style={{
                                                     marginVertical: 8,
                                                     borderRadius: 16,
-                                                    alignSelf:'center'
+                                                    alignSelf: 'center'
                                                 }}
                                             />
                                         </View>

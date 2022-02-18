@@ -130,7 +130,7 @@ const AcademicQuestions = ({ navigation, route }) => {
                             data={data}
                             keyExtractor={(item, index) => index}
                             renderItem={({ item, index }) => {
-                                return <TouchableOpacity style={styles.card} >
+                                return <View style={styles.card} >
                                     <Text style={{ fontSize: 20, color: '#eee' }}>Question # {item.Qid}</Text>
                                     <Text style={{ fontSize: 20, color: '#eee' }}>{item.Question}</Text>
                                     <RadioForm
@@ -152,14 +152,18 @@ const AcademicQuestions = ({ navigation, route }) => {
                                         selectedButtonColor={"green"}
                                         selectedLabelColor={"#fff"}
                                         labelStyle={{ fontSize: 20 }} />
+                                </View>
+                            }
+                            }
+
+                            ListFooterComponent={
+                                <TouchableOpacity style={styles.btnTouchable}
+                                onPress={()=>saveEvaluation()}>
+                                    <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
                                 </TouchableOpacity>
                             }
-                            }
                         />
-                        <TouchableOpacity style={styles.btnTouchable}
-                        onPress={()=>saveEvaluation()}>
-                            <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
-                        </TouchableOpacity>
+
                     </View>
                 )
             }
@@ -169,7 +173,7 @@ const AcademicQuestions = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#eee',
+        backgroundColor: '#ddd',
     },
     horizontal: {
         flexDirection: "row",
@@ -180,8 +184,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 20,
         marginHorizontal: 8,
-        marginTop: 5,
-        marginBottom: 10,
+        marginVertical:3,
         backgroundColor: '#1bb',
         shadowColor: "#db6363",
         shadowOffset: {
@@ -223,14 +226,15 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     btnTouchable: {
-        backgroundColor: '#f44336',
+        backgroundColor: 'blue',
         borderWidth: 1,
         borderColor: '#eee',
         height: 55,
         borderRadius: 10,
         width: '90%',
         justifyContent: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginBottom:25,
     }
 }
 )

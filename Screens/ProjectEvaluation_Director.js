@@ -75,7 +75,7 @@ const ProjectEvaluation_Director = ({ navigation, route }) => {
         console.log('....');
         data.forEach(element => {
             if (element.Selected !== '') {
-                console.log(element.Qid,element.Question,element.Category,element.Selected,route.params.TeacherId,route.params.TeacherName,route.params.LoginId);
+                console.log(element.Qid, element.Question, element.Category, element.Selected, route.params.TeacherId, route.params.TeacherName, route.params.LoginId);
                 // console.log(route.params.Reg_no,element.Qid,route.params.Emp_no,route.params.Course ,element.Selected,teacherName);
                 var InsertApiURL = `http://${ip}/EmpPerformanceApi/api/Evaluation/addProjectEvaluation`;
                 var headers = {
@@ -90,7 +90,7 @@ const ProjectEvaluation_Director = ({ navigation, route }) => {
                     Emp_No: route.params.EmpNo,
                     Evaluation_on: route.params.TeacherName,
                     Evaluated_By: route.params.LoginId,
-                    Role:'Director'
+                    Role: 'Director'
                 }
                 fetch(InsertApiURL,
                     {
@@ -125,11 +125,11 @@ const ProjectEvaluation_Director = ({ navigation, route }) => {
                 ) : (
                     <View style={{ flex: 1 }}>
                         <Text style={{ fontSize: 24, fontFamily: "ArchitectsDaughter-Regular", textAlign: 'center' }}> {route.params.TeacherName} </Text>
-                        <FlatList style={{ padding: 7, width: '100%' }} showsVerticalScrollIndicator={false}
+                        <FlatList style={{ padding: 7, width: '100%', flex: 1 }} showsVerticalScrollIndicator={false}
                             data={data}
                             keyExtractor={(item, index) => index}
                             renderItem={({ item, index }) => {
-                                return <TouchableOpacity style={styles.card} >
+                                return <View style={styles.card} >
                                     <Text style={{ fontSize: 20, color: '#eee' }}>Question # {item.Qid}</Text>
                                     <Text style={{ fontSize: 20, color: '#eee' }}>{item.Question}</Text>
                                     <RadioForm
@@ -151,14 +151,17 @@ const ProjectEvaluation_Director = ({ navigation, route }) => {
                                         selectedButtonColor={"green"}
                                         selectedLabelColor={"#fff"}
                                         labelStyle={{ fontSize: 20 }} />
-                                </TouchableOpacity>
+                                </View>
                             }
                             }
-                        />
-                        <TouchableOpacity style={styles.btnTouchable}
-                        onPress={()=>saveEvaluation()}>
+                        ListFooterComponent={
+                            <TouchableOpacity style={styles.btnTouchable}
+                            onPress={() => saveEvaluation()}>
                             <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', color: '#fff' }}>Save</Text>
                         </TouchableOpacity>
+                        }
+                        />
+                       
                     </View>
                 )
             }
@@ -168,7 +171,7 @@ const ProjectEvaluation_Director = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#eee',
+        backgroundColor: '#ddd',
     },
     horizontal: {
         flexDirection: "row",
@@ -222,14 +225,15 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     btnTouchable: {
-        backgroundColor: '#f44336',
+        backgroundColor: 'blue',
         borderWidth: 1,
         borderColor: '#eee',
         height: 55,
         borderRadius: 10,
         width: '90%',
         justifyContent: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginBottom:20,
     }
 }
 )

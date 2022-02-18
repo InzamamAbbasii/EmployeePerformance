@@ -48,7 +48,7 @@ const Kpi = ({ navigation }) => {
   }
   useEffect(() => {
     getSelectedKPIWeight();
-  }, [selectedCategory]);
+  }, [selectedCategory,selectedStaff]);
 
   const getSelectedKPIWeight = () => {
     setIsFetching(true);
